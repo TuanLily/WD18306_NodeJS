@@ -49,62 +49,67 @@
   </head>
 
   <body>
-    <!-- Start Main Top -->
-    <%- include("../helper/header/header.helper.ejs") %>
-    <!-- End Main Top -->
-
-    <!-- Start Main Top -->
-    <%- include("../helper/header/nav.helper.ejs") %>
-    <!-- End Main Top -->
-
-    <!-- Start Top Search -->
-    <%- include("../helper/component/modal-search.ejs") %>
-    <!-- End Top Search -->
-
-    <!-- Start Slider -->
-    <%- include("../helper/component/slider.ejs") %>
-    <!-- End Slider -->
-
     <!-- *Main start -->
-    <% switch (page) { 
-        case 'about': %>
-            <%- include("../model/pages/about.ejs") %>
-            <% break; %>
-        <% case 'post': %>
-            <%- include("../model/pages/post.ejs") %>
-            <% break; %>
-        <% case 'cart': %>
-            <%- include("../model/pages/cart.ejs") %>
-            <% break; %>
-        <% case 'shop': %>
-            <%- include("../model/pages/shop.ejs") %>
-            <% break; %>
-        <% case 'shop-detail': %>
-            <%- include("../model/pages/shop-detail.ejs") %>
-            <% break; %>
-        <% case 'checkout': %>
-            <%- include("../model/pages/checkout.ejs") %>
-            <% break; %>
-        <% case 'contact': %>
-            <%- include("../model/pages/contact.ejs") %>
-            <% break; %>
-        <% case 'account': %>
-            <%- include("../model/pages/account.ejs") %>
-            <% break; %>
-        <% default: %>
-            <%- include("../model/pages/home.ejs") %>
-    <% } %>
-    
+    <% switch (page) { case 'about': %> <%-
+    include("../helper/header/header.helper.ejs") %> <%-
+    include("../helper/header/nav.helper.ejs") %> <%-
+    include("../helper/component/modal-search.ejs") %> <%-
+    include("../model/pages/about.ejs") %> <%-
+    include("../helper/component/insta-feed.ejs") %> <%-
+    include("../helper/footer/footer.helper.ejs") %> <% break; %> <% case'post':
+    %> <%- include("../helper/header/header.helper.ejs") %> <%-
+    include("../helper/header/nav.helper.ejs") %> <%-
+    include("../helper/component/modal-search.ejs") %> <%-
+    include("../model/pages/post.ejs") %> <%-
+    include("../helper/component/insta-feed.ejs") %> <%-
+    include("../helper/footer/footer.helper.ejs") %> <% break; %> <% case
+    'cart': %> <%- include("../helper/header/header.helper.ejs") %> <%-
+    include("../helper/header/nav.helper.ejs") %> <%-
+    include("../helper/component/modal-search.ejs") %> <%-
+    include("../model/pages/cart.ejs") %> <%-
+    include("../helper/component/insta-feed.ejs") %> <%-
+    include("../helper/footer/footer.helper.ejs") %> <% break; %> <% case
+    'shop': %> <%- include("../helper/header/header.helper.ejs") %> <%-
+    include("../helper/header/nav.helper.ejs") %> <%-
+    include("../helper/component/modal-search.ejs") %> <%-
+    include("../helper/component/slider.ejs") %> <%-
+    include("../model/pages/shop.ejs") %> <%-
+    include("../helper/component/insta-feed.ejs") %> <%-
+    include("../helper/footer/footer.helper.ejs") %> <% break; %> <% case
+    'shop-detail': %> <%- include("../helper/header/header.helper.ejs") %> <%-
+    include("../helper/header/nav.helper.ejs") %> <%-
+    include("../helper/component/modal-search.ejs") %> <%-
+    include("../model/pages/shop-detail.ejs") %> <%-
+    include("../helper/component/insta-feed.ejs") %> <%-
+    include("../helper/footer/footer.helper.ejs") %> <% break; %> <% case
+    'checkout': %> <%- include("../helper/header/header.helper.ejs") %> <%-
+    include("../helper/header/nav.helper.ejs") %> <%-
+    include("../helper/component/modal-search.ejs") %> <%-
+    include("../model/pages/checkout.ejs") %> <%-
+    include("../helper/component/insta-feed.ejs") %> <%-
+    include("../helper/footer/footer.helper.ejs") %> <% break; %> <% case
+    'contact': %> <%- include("../helper/header/header.helper.ejs") %> <%-
+    include("../helper/header/nav.helper.ejs") %> <%-
+    include("../helper/component/modal-search.ejs") %> <%-
+    include("../helper/component/slider.ejs") %> <%-
+    include("../model/pages/contact.ejs") %> <%-
+    include("../helper/component/insta-feed.ejs") %> <%-
+    include("../helper/footer/footer.helper.ejs") %> <% break; %> <% case
+    'account': %> <%- include("../helper/header/header.helper.ejs") %> <%-
+    include("../helper/header/nav.helper.ejs") %> <%-
+    include("../helper/component/modal-search.ejs") %> <%-
+    include("../model/pages/account.ejs") %> <%-
+    include("../helper/component/insta-feed.ejs") %> <%-
+    include("../helper/footer/footer.helper.ejs") %> <% break; %> <% default: %>
+    <%- include("../helper/header/header.helper.ejs") %> <%-
+    include("../helper/header/nav.helper.ejs") %> <%-
+    include("../helper/component/modal-search.ejs") %> <%-
+    include("../helper/component/slider.ejs") %> <%-
+    include("../model/pages/home.ejs") %> <%-
+    include("../helper/component/insta-feed.ejs") %> <%-
+    include("../helper/footer/footer.helper.ejs") %> <% } %>
+
     <!-- *Main end -->
-
-    <!-- Start Instagram Feed  -->
-    <%- include("../helper/component/insta-feed.ejs") %>
-
-    <!-- End Instagram Feed  -->
-
-    <!-- Start Footer  -->
-    <%- include("../helper/footer/footer.helper.ejs") %>
-    <!-- End Footer  -->
 
     <!-- ALL JS FILES -->
     <script src="../../client/public/js/jquery-3.2.1.min.js"></script>
