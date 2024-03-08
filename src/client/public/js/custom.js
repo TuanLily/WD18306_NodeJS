@@ -1,10 +1,10 @@
-(function($) {
-    "use strict";
-	
+(function ($) {
+	"use strict";
+
 	/* ..............................................
 	   Loader 
 	   ................................................. */
-	$(window).on('load', function() {
+	$(window).on('load', function () {
 		$('.preloader').fadeOut();
 		$('#preloader').delay(550).fadeOut('slow');
 		$('body').delay(450).css({
@@ -16,7 +16,7 @@
 	   Fixed Menu
 	   ................................................. */
 
-	$(window).on('scroll', function() {
+	$(window).on('scroll', function () {
 		if ($(window).scrollTop() > 50) {
 			$('.main-header').addClass('fixed-menu');
 		} else {
@@ -41,15 +41,15 @@
 	   Map Full
 	   ................................................. */
 
-	$(document).ready(function() {
-		$(window).on('scroll', function() {
+	$(document).ready(function () {
+		$(window).on('scroll', function () {
 			if ($(this).scrollTop() > 100) {
 				$('#back-to-top').fadeIn();
 			} else {
 				$('#back-to-top').fadeOut();
 			}
 		});
-		$('#back-to-top').click(function() {
+		$('#back-to-top').click(function () {
 			$("html, body").animate({
 				scrollTop: 0
 			}, 600);
@@ -62,9 +62,9 @@
 	   ................................................. */
 
 	var Container = $('.container');
-	Container.imagesLoaded(function() {
+	Container.imagesLoaded(function () {
 		var portfolio = $('.special-menu');
-		portfolio.on('click', 'button', function() {
+		portfolio.on('click', 'button', function () {
 			$(this).addClass('active').siblings().removeClass('active');
 			var filterValue = $(this).attr('data-filter');
 			$grid.isotope({
@@ -103,7 +103,7 @@
 	   Tooltip
 	   ................................................. */
 
-	$(document).ready(function() {
+	$(document).ready(function () {
 		$('[data-toggle="tooltip"]').tooltip();
 	});
 
@@ -169,15 +169,15 @@
 	   Scroll
 	   ................................................. */
 
-	$(document).ready(function() {
-		$(window).on('scroll', function() {
+	$(document).ready(function () {
+		$(window).on('scroll', function () {
 			if ($(this).scrollTop() > 100) {
 				$('#back-to-top').fadeIn();
 			} else {
 				$('#back-to-top').fadeOut();
 			}
 		});
-		$('#back-to-top').click(function() {
+		$('#back-to-top').click(function () {
 			$("html, body").animate({
 				scrollTop: 0
 			}, 600);
@@ -190,13 +190,13 @@
 	   Slider Range
 	   ................................................. */
 
-	$(function() {
+	$(function () {
 		$("#slider-range").slider({
 			range: true,
 			min: 0,
 			max: 4000,
 			values: [1000, 3000],
-			slide: function(event, ui) {
+			slide: function (event, ui) {
 				$("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
 			}
 		});
@@ -211,6 +211,24 @@
 	$(".brand-box").niceScroll({
 		cursorcolor: "#9b9b9c",
 	});
-	
-	
+
+
 }(jQuery));
+
+
+document.addEventListener("DOMContentLoaded", function () {
+	const searchIcon = document.getElementById("searchIcon");
+	const searchBox = document.getElementById("searchBox");
+
+	searchIcon.addEventListener("click", function (event) {
+		event.preventDefault(); // Ngăn chặn hành vi mặc định khi click vào liên kết
+
+		if (searchBox.style.display === "none") {
+			searchBox.style.display = "block"; // Hiển thị hộp tìm kiếm nếu đang ẩn
+		} else {
+			searchBox.style.display = "none"; // Ẩn hộp tìm kiếm nếu đang hiển thị
+		}
+	});
+});
+
+

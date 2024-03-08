@@ -5,9 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js",
+    "start": "nodemon --inspect server.js",
     "prepare": "husky install",
-    "lint": "npx eslint **.js"
+    "lint": "npx eslint **.js --fix"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "eslint": "^8.57.0",
+    "eslint-plugin-node": "^11.1.0",
     "husky": "^8.0.0"
   }
 }
