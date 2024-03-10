@@ -24,8 +24,9 @@ adminApp.use(express.static(path.join(__dirname, "src", "admin")));
 adminApp.use("/admin", require("./src/admin/adminRoutes/route.js"));
 
 // Sử dụng các ứng dụng con trong ứng dụng chính
-app.use(clientApp) && app.use(adminApp)
-;
+app.use(clientApp);
+app.use(adminApp);
+
 
 
 //! Chạy port

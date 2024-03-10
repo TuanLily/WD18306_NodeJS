@@ -2,13 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>DASHMIN - Bootstrap Admin Template</title>
+    <title>FRESHSHOP DASHBOARD ADMIN</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="keywords" />
     <meta content="" name="description" />
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon" />
+    <link href="../adminPublic/img/favicon.ico" rel="icon" />
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -30,7 +30,7 @@
 
     <!-- Libraries Stylesheet -->
     <link
-      href="../admin/adminPublic/lib/owlcarousel/assets/owl.carousel.min.css"
+      href="../adminPublic/lib/owlcarousel/assets/owl.carousel.min.css"
       rel="stylesheet"
     />
     <link
@@ -62,10 +62,31 @@
         <!-- Navbar End -->
 
         <!-- * Main Start -->
-        <% switch (page) { case '/': %> <%-
-        include("../adminModel/pages/home.ejs") %> <% break; case 'button': %>
-        <%- include("../adminModel/pages/button.ejs") %> <% break; default: %>
-        <%- include("../adminModel/pages/home.ejs") %> <% } %>
+        <% switch (page) { 
+        case 'button': %>
+           <%- include("../adminModel/pages/button.ejs") %> 
+           <% break; 
+        case 'element': %>
+           <%- include("../adminModel/pages/element.ejs") %> 
+           <% break; 
+        case 'widget': %>
+           <%- include("../adminModel/pages/widget.ejs") %> 
+           <% break; 
+        case 'table': %>
+           <%- include("../adminModel/pages/table.ejs") %> 
+           <% break; 
+        case 'typography': %>
+           <%- include("../adminModel/pages/typography.ejs") %> 
+           <% break; 
+        case 'form': %>
+           <%- include("../adminModel/pages/form.ejs") %> 
+           <% break; 
+        case 'chart': %>
+           <%- include("../adminModel/pages/chart.ejs") %> 
+           <% break; 
+        default: %>
+            <%- include("../adminModel/pages/home.ejs") %>
+        <% } %>
 
         <!-- * Main End -->
 
@@ -76,9 +97,9 @@
       <!-- Content End -->
 
       <!-- Back to Top -->
-      <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"
-        ><i class="bi bi-arrow-up"></i> ></a
-      >
+      <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top">
+        <i class="bi bi-arrow-up"></i>
+      </a>
     </div>
 
     <!-- JavaScript Libraries -->
