@@ -38,4 +38,20 @@ router.get("/404", (req, res) => {
     adminController.renderAdmin404Page(req, res, "404");
 });
 
+router.get("/cate-list", (req, res) => {
+    adminController.renderSubPage(req, res, "cate-list");
+});
+
+router.get("/:subPage", (req, res) => {
+    const subPage = req.params.subPage;
+    // eslint-disable-next-line no-prototype-builtins
+    if (adminController.subPages.hasOwnProperty(subPage)) {
+        adminController.renderSubPage(req, res, adminController.subPages[subPage]);
+    } else {
+        // Xử lý nếu trang con không tồn tại
+        adminController.renderAdminHomePage(req, res, "home");
+    }
+});
+
+
 module.exports = router;

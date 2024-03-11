@@ -34,6 +34,26 @@ const renderAdmin404Page = (req, res) => {
     res.render("index", { page: "404" }); // Render trang "404" của admin
 };
 
+
+// Biến lưu tên các trang con
+const subPages = {
+    productList: "productList",
+    productCreate: "productCreate",
+    productEdit: "productEdit",
+    cateList: "cateList",
+    cateCreate: "cateCreate",
+    cateEdit: "cateEdit",
+    orderList: "orderList",
+    orderDetail: "orderDetail"
+    // Thêm các trang con khác nếu cần
+};
+
+// Hàm render trang con
+const renderSubPage = (req, res, subPage) => {
+    res.render("index" , {page: subPage});
+};
+
+
 module.exports = {
     renderAdminHomePage,
     renderAdminButtonPage,
@@ -43,5 +63,7 @@ module.exports = {
     renderAdminTablePage,
     renderAdminTypographyPage,
     renderAdminElementPage,
-    renderAdminFormPage
+    renderAdminFormPage,
+    subPages,
+    renderSubPage
 };
