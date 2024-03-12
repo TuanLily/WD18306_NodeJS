@@ -44,7 +44,8 @@ const subPages = {
     cateCreate: "cateCreate",
     cateEdit: "cateEdit",
     orderList: "orderList",
-    orderDetail: "orderDetail"
+    orderDetail: "orderDetail",
+    userList: "userList"
     // Thêm các trang con khác nếu cần
 };
 
