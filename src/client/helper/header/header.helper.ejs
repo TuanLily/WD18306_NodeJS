@@ -32,25 +32,32 @@
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
         <div class="login-box">
           <select
-            id="basic"
-            class="selectpicker show-tick form-control"
-            data-placeholder="Sign In"
+              id="basic"
+              class="selectpicker show-tick form-control"
+              data-placeholder="Sign In"
+              onchange="handleSelection(this)"
           >
-            <option>Đăng ký</option>
-            <option>Đăng nhập</option>
+              <option selected>Đăng nhập/Đăng ký</option>
+              <option value="/login">Đăng nhập</option>
+              <option value="/register">Đăng ký</option>
           </select>
-        </div>
+      </div>
+           
         <div class="text-slid-box">
           <div id="offer-box" class="carouselTicker">
             <ul class="offer-box">
               <li>
-                <i class="fab fa-opencart"></i> Giảm giá 20% cho tất cả các loại trái cây với mã: fs20
+                <i class="fab fa-opencart"></i> Giảm giá 20% cho tất cả các loại
+                trái cây với mã: fs20
+              </li>
+              <li><i class="fab fa-opencart"></i> Giảm 20k cho đơn từ 250k</li>
+              <li>
+                <i class="fab fa-opencart"></i> Giảm 10%! cho các loại rau củ
               </li>
               <li>
-                <i class="fab fa-opencart"></i> Giảm 20k cho đơn từ 250k
+                <i class="fab fa-opencart"></i> Giảm lên đến 50%! cho khách hàng
+                có thẻ thành viên
               </li>
-              <li><i class="fab fa-opencart"></i> Giảm 10%! cho các loại rau củ</li>
-              <li><i class="fab fa-opencart"></i> Giảm lên đến 50%! cho khách hàng có thẻ thành viên</li>
             </ul>
           </div>
         </div>
@@ -58,3 +65,12 @@
     </div>
   </div>
 </div>
+
+<script>
+  function handleSelection(select) {
+      const selectedValue = select.value;
+      if (selectedValue) {
+          window.location.href = selectedValue;
+      }
+  }
+</script>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Site Metas -->
-    <title>Freshshop - Ecommerce Bootstrap 4 HTML Template</title>
+    <title>Freshshop</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
@@ -97,8 +97,11 @@
     include("../helper/component/modal-search.ejs") %> <%-
     include("../model/pages/account.ejs") %> <%-
     include("../helper/component/insta-feed.ejs") %> <%-
-    include("../helper/footer/footer.helper.ejs") %> <% break; %> <% default: %>
-    <%- include("../helper/header/header.helper.ejs") %> <%-
+    include("../helper/footer/footer.helper.ejs") %> <% break; %><% case
+    'login': %> <%- include("../model/pages/authenticate/login.ejs") %> <%
+    break; %><% case 'register': %> <%-
+    include("../model/pages/authenticate/register.ejs") %> <% break; %> <%
+    default: %> <%- include("../helper/header/header.helper.ejs") %> <%-
     include("../helper/header/nav.helper.ejs") %> <%-
     include("../helper/component/modal-search.ejs") %> <%-
     include("../helper/component/slider.ejs") %> <%-

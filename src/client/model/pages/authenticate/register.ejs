@@ -1,0 +1,138 @@
+<style>
+  @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .section-background {
+    background: linear-gradient(45deg, #b0b434, rgb(97, 255, 113));
+    background-size: 200% 200%;
+    animation: gradientAnimation 10s ease infinite;
+  }
+
+  .return-link {
+    color: #333; /* Màu của liên kết */
+    text-decoration: none; /* Xóa gạch chân của liên kết */
+    transition: color 0.3s; /* Hiệu ứng chuyển đổi màu trong 0.3 giây */
+  }
+  .return-link:hover {
+    color: rgb(236, 241, 86); /* Màu của liên kết khi hover */
+  }
+  .return-link i {
+    margin-right: 5px; /* Khoảng cách giữa icon và văn bản */
+  }
+</style>
+
+<section class="vh-100 section-background">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-xl-10">
+        <!-- Thêm liên kết trở về vào đây -->
+        <a href="/" class="return-link">
+          <i class="fas fa-arrow-left"></i> Trở về
+        </a>
+        <!-- Kết thúc liên kết trở về -->
+        <div class="card" style="border-radius: 1rem">
+          <div class="row g-0">
+            <div class="col-md-6 col-lg-5 d-none d-md-block">
+              <img
+                src="../public/images/blog-img.jpg"
+                alt="login form"
+                class="img-fluid"
+                style="border-radius: 1rem 0 0 1rem; height: 80%"
+              />
+            </div>
+            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+              <div class="card-body p-4 p-lg-5 text-black">
+                <form>
+                  <div class="d-flex align-items-center mb-3 pb-1">
+                    <img
+                      src="../public/images/favicon.ico"
+                      alt="login form"
+                      class="img-fluid"
+                    />
+                    <span class="h1 fw-bold mb-0">Freshshop</span>
+                  </div>
+
+                  <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px">
+                    Đăng ký tài khoản
+                  </h5>
+
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form2Example17"
+                      >Họ và tên</label
+                    >
+                    <input
+                      type="text"
+                      name="fullname"
+                      id="form2Example17"
+                      class="form-control form-control-lg"
+                    />
+                    <div class="fullnameError">nữa bắt lỗi ở đây</div>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form2Example17"
+                      >Email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      id="form2Example17"
+                      class="form-control form-control-lg"
+                    />
+                    <div class="emailError">nữa bắt lỗi ở đây</div>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form2Example27"
+                      >Mật khẩu</label
+                    >
+                    <input
+                      type="password"
+                      name="password"
+                      id="form2Example27"
+                      class="form-control form-control-lg"
+                    />
+                    <div class="passwordError">nữa bắt lỗi ở đây</div>
+                  </div>
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form2Example27"
+                      >Mật khẩu xác nhận</label
+                    >
+                    <input
+                      type="password"
+                      name="isPassword"
+                      id="form2Example27"
+                      class="form-control form-control-lg"
+                    />
+                    <div class="isPasswordError">nữa bắt lỗi ở đây</div>
+                  </div>
+
+                  <div class="pt-1 mb-4">
+                    <button class="btn btn-dark btn-lg btn-block" type="button">
+                      Login
+                    </button>
+                  </div>
+
+                  <p class="mb-5 pb-lg-2" style="color: #393f81">
+                    Bạn đã có tài khoản?
+                    <a href="/login" style="color: #393f81"
+                      >Đăng nhập tại đây</a
+                    >
+                  </p>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

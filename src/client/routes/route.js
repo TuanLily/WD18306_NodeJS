@@ -37,5 +37,11 @@ router.get("/contact", (req, res) => {
 router.get("/account", (req, res) => {
     controller.renderAccountPage(req, res, "account");
 });
+router.get("/login", (req, res) => {
+    controller.renderLoginPage(req, res, "login");
+});
+router.get("/register", (req, res) => {
+    controller.renderRegisterPage(req, res, "register");
+});
 
 module.exports = router;
