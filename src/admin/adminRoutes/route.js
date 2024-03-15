@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const adminController = require("../adminController/controller");
 
+
 // Route cho trang chính của admin
 router.get("/", (req, res) => {
     adminController.renderAdminHomePage(req, res, "home");
@@ -38,16 +39,34 @@ router.get("/404", (req, res) => {
     adminController.renderAdmin404Page(req, res, "404");
 });
 
-router.get("/productList", adminController.renderProductListPage);
-router.get("/productCreate", adminController.renderProductCreatePage);
-router.get("/productEdit", adminController.renderProductEditPage);
+
+//* Bắt đầu phần điều hướng phần danh mục
 router.get("/cateList", adminController.renderCategoryListPage);
 router.get("/cateCreate", adminController.renderCategoryCreatePage);
 router.post("/cateCreate", adminController.addCategory);
 router.get("/cateDelete/:id", adminController.deleteCategory);
+// router.get("/cateEdit", adminController.renderCategoryEditPage);
+// Route để hiển thị trang sửa danh mục
 router.get("/cateEdit", adminController.renderCategoryEditPage);
+
+// Route để xử lý yêu cầu cập nhật danh mục
+router.post("/cateEdit", adminController.updateCategory);
+//* Kết thúc phần điều hướng phần danh mục
+
+
+//* Bắt đầu phần điều hướng phần sản phẩm
+router.get("/productList", adminController.renderProductListPage);
+router.get("/productCreate", adminController.renderProductCreatePage);
+router.get("/productEdit", adminController.renderProductEditPage);
+//* Kết thúc phần điều hướng phần sản phẩm
+
+
+//* Bắt đầu phần điều hướng phần tài khoản
 router.get("/orderList", adminController.renderOrderListPage);
 router.get("/orderDetail", adminController.renderOrderDetailPage);
 router.get("/userList", adminController.renderUserListPage);
+//* Kết thúc phần điều hướng phần tài khoản
+
+
 
 module.exports = router;

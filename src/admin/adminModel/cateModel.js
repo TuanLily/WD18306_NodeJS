@@ -14,6 +14,7 @@ const getCategoryList = (callback) => {
 };
 
 const addCategory = (name, callback) => {
+    // Tiếp tục thực hiện yêu cầu chỉ khi không có lỗi
     const query = "INSERT INTO categories (name) VALUES (?)";
     connection.query(query, [name], (err, result) => {
         if (err) {
@@ -23,6 +24,8 @@ const addCategory = (name, callback) => {
         callback(null, result.insertId);
     });
 };
+
+
 
 const deleteCategory = (categoryId, callback) => {
     const query = "DELETE FROM categories WHERE id = ?";
@@ -34,8 +37,36 @@ const deleteCategory = (categoryId, callback) => {
         callback(null, result);
     });
 };
+
+// Hàm để lấy thông tin của một danh mục dựa trên ID
+const getCategoryById = (categoryId, callback) => {
+    const query = "SELECT * FROM categories WHERE id = ?";
+    connection.query(query, [categoryId], (err, category) => {
+        if (err) {
+            callback(err, null);
+            return;
+        }
+        callback(null, category[0]); // Trả về kết quả đầu tiên nếu có
+    });
+};
+
+const updateCategory = (categoryId, newData, callback) => {
+
+    const query = "UPDATE categories SET name = ? WHERE id = ?";
+    const values = [newData.name, categoryId];
+    connection.query(query, values, (err, result) => {
+        if (err) {
+            callback(err);
+            return;
+        }
+        callback(null, result.changedRows); // Trả về số dòng đã thay đổi
+    });
+};
+
 module.exports = {
     getCategoryList,
     addCategory,
-    deleteCategory
+    deleteCategory,
+    getCategoryById,
+    updateCategory
 };

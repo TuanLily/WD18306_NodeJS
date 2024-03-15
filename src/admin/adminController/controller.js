@@ -49,6 +49,7 @@ const renderProductEditPage = (req, res) => {
     res.render("index", { page: "productEdit" });
 };
 
+
 const renderCategoryListPage = (req, res) => {
     // Gọi hàm để lấy danh sách danh mục từ cơ sở dữ liệu
     cateModel.getCategoryList((err, categories) => {
@@ -102,9 +103,52 @@ const deleteCategory = (req, res) => {
     });
 };
 
+// Hàm render trang sửa danh mục
 const renderCategoryEditPage = (req, res) => {
-    res.render("index", { page: "cateEdit" });
+    // Lấy categoryId từ query parameters
+    const categoryId = req.query.id;
+
+    if (categoryId) {
+        // Trang hiện tại đang ở đường dẫn /cateEdit?id=:id
+        // Gọi hàm để lấy thông tin danh mục từ cơ sở dữ liệu
+        cateModel.getCategoryById(categoryId, (err, category) => {
+            if (err) {
+                // Xử lý lỗi nếu có
+                console.error("Error fetching category:", err);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
+            // Nếu không có lỗi, render trang và truyền thông tin danh mục vào template
+            res.render("index", { page: "cateEdit", category });
+        });
+    } else {
+        // Trang hiện tại đang ở đường dẫn /cateEdit
+        // Thực hiện logic tương ứng
+        res.render("index", { page: "cateEdit" });
+    }
 };
+
+//  Hàm xử lý yêu cầu cập nhật danh mục
+const updateCategory = (req, res) => {
+    // Lấy thông tin từ body của request
+    const categoryId = req.query.id;
+    const newData = { name: req.body.name }; // Tạo object mới chứa dữ liệu cần cập nhật
+
+    // Gọi hàm để cập nhật danh mục trong cơ sở dữ liệu
+    cateModel.updateCategory(categoryId, newData, (err) => {
+        if (err) {
+            // Xử lý lỗi nếu có
+            console.error("Error updating category:", err);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+        // Nếu không có lỗi, redirect lại trang danh sách danh mục
+        res.redirect("/admin/cateList");
+    });
+};
+
+
+
 
 const renderOrderListPage = (req, res) => {
     res.render("index", { page: "orderList" });
@@ -131,14 +175,15 @@ module.exports = {
     renderProductListPage,
     renderProductCreatePage,
     renderProductEditPage,
-    renderCategoryListPage,
-    renderCategoryCreatePage,
-    renderCategoryEditPage,
+
     renderOrderListPage,
     renderOrderDetailPage,
     renderUserListPage,
 
-
+    renderCategoryListPage,
+    renderCategoryCreatePage,
     addCategory,
-    deleteCategory
+    deleteCategory,
+    renderCategoryEditPage,
+    updateCategory
 };

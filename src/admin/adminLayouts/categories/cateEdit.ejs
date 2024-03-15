@@ -1,20 +1,67 @@
 <!-- Form Start -->
 <div class="container-fluid pt-4 px-4">
-    <div class="row g-4">
-        <div class="col-sm-12 col-xl-12">
-            <div class="bg-light rounded h-100 p-4">
-                <h6 class="mb-4">Sửa danh mục</h6>
-                <form class="formEdit-Category">
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Tên danh mục</label>
-                        <input type="text" id="title" class="form-control" aria-describedby="title">
-                        <div id="categoryError" class="my-2"></div>
-                    </div>
-                    <button type="submit" id="myBtn" class="btn btn-primary m-2">Lưu thay đổi</button>
-                    <input type="reset" class="btn btn-warning m-2" value="Nhập lại">
-                </form>
-            </div>
-        </div>
+  <div class="row g-4">
+    <div class="col-sm-12 col-xl-12">
+      <div class="bg-light rounded h-100 p-4">
+        <h6 class="mb-4">Sửa danh mục</h6>
+        <form
+          action="/admin/cateEdit?id=<%= category.id %>"
+          method="POST"
+          class="form-category"
+          id="categoryForm"
+        >
+          <div class="mb-3">
+            <label for="name" class="form-label">Sửa danh mục</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="form-control"
+              aria-describedby="name"
+              value="<%= category.name %>"
+            />
+            <div id="categoryError" class="my-2"></div>
+          </div>
+          <button type="submit" id="myBtn" class="btn btn-primary m-2">
+            Lưu thay đổi
+          </button>
+
+          <input type="reset" class="btn btn-warning m-2" value="Nhập lại" />
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 <!-- Form End -->
+<script>
+  document
+    .getElementById("categoryForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      const nameInput = document.getElementById("name");
+      const categoryError = document.getElementById("categoryError");
+
+      // Kiểm tra nếu trường "Tên danh mục" không được nhập
+      if (!nameInput.value.trim()) {
+        categoryError.innerHTML = `<span class="text-danger">Tên danh mục không được để trống</span>`;
+      }
+      // Kiểm tra nếu trường "Tên danh mục" có ít hơn 2 ký tự
+      else if (nameInput.value.trim().length < 2) {
+        categoryError.innerHTML = `<span class="text-danger">Tên danh mục phải có ít nhất 2 ký tự</span>`;
+      } else {
+        // Hiển thị thông báo thành công bằng SweetAlert2
+        Swal.fire({
+          icon: "success",
+          title: "Thành công!",
+          text: "Thêm danh mục mới thành công!",
+          showConfirmButton: false,
+          timer: 1500, // Tắt tự động sau 1.5 giây
+          didClose: () => {
+            // didClose là một trong các sự kiện callback được kích hoạt khi một cửa sổ thông báo đã đóng hoàn toàn.
+            // Sau khi hiển thị thông báo, gửi biểu mẫu
+            this.submit();
+          },
+        });
+      }
+    });
+</script>
