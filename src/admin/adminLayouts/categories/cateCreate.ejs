@@ -4,10 +4,10 @@
         <div class="col-sm-12 col-xl-12">
             <div class="bg-light rounded h-100 p-4">
                 <h6 class="mb-4">Thêm danh mục</h6>
-                <form class="form-category">
+                <form action="/admin/cateCreate" method="POST" class="form-category">
                     <div class="mb-3">
-                        <label for="title" class="form-label">Tên danh mục</label>
-                        <input type="text" id="title" class="form-control" aria-describedby="title">
+                        <label for="name" class="form-label">Tên danh mục</label>
+                        <input type="text" id="name" name="name" class="form-control" aria-describedby="title">
                         <div id="categoryError" class="my-2"></div>
                     </div>
                     <button type="submit" id="myBtn" class="btn btn-primary m-2">Thêm mới</button>
@@ -19,4 +19,3 @@
     </div>
 </div>
 <!-- Form End -->
-

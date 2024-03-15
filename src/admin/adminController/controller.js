@@ -1,3 +1,5 @@
+const cateModel = require("../adminModel/cateModel");
+
 const renderAdminHomePage = (req, res) => {
     res.render("index", { page: "home" }); // Render trang chính của admin
 };
@@ -35,25 +37,86 @@ const renderAdmin404Page = (req, res) => {
 };
 
 
-// Biến lưu tên các trang con
-const subPages = {
-    productList: "productList",
-    productCreate: "productCreate",
-    productEdit: "productEdit",
-    cateList: "cateList",
-    cateCreate: "cateCreate",
-    cateEdit: "cateEdit",
-    orderList: "orderList",
-    orderDetail: "orderDetail",
-    userList: "userList"
-    // Thêm các trang con khác nếu cần
+const renderProductListPage = (req, res) => {
+    res.render("index", { page: "productList" });
 };
 
-// Hàm render trang con
-const renderSubPage = (req, res, subPage) => {
-    res.render("index" , {page: subPage});
+const renderProductCreatePage = (req, res) => {
+    res.render("index", { page: "productCreate" });
 };
 
+const renderProductEditPage = (req, res) => {
+    res.render("index", { page: "productEdit" });
+};
+
+const renderCategoryListPage = (req, res) => {
+    // Gọi hàm để lấy danh sách danh mục từ cơ sở dữ liệu
+    cateModel.getCategoryList((err, categories) => {
+        if (err) {
+            // Xử lý lỗi nếu có
+            console.error("Error fetching categories:", err);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+        // Nếu không có lỗi, render trang và truyền danh sách danh mục vào template
+        res.render("index", { page: "cateList", categories });
+    });
+};
+
+
+const renderCategoryCreatePage = (req, res) => {
+    res.render("index", { page: "cateCreate" });
+};
+
+const addCategory = (req, res) => {
+    const { name } = req.body;
+
+    // Gọi hàm để thêm danh mục vào cơ sở dữ liệu
+    cateModel.addCategory(name, (err) => {
+        if (err) {
+            // Xử lý lỗi nếu có
+            console.error("Error adding category:", err);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+        // Nếu không có lỗi, chuyển hướng người dùng đến trang danh sách danh mục
+        res.redirect("/admin/cateList");
+    });
+};
+
+// Hàm xóa danh mục
+const deleteCategory = (req, res) => {
+    // Lấy categoryId từ tham số trong URL
+    const categoryId = req.params.id;
+
+    // Gọi hàm để xóa danh mục từ cơ sở dữ liệu
+    cateModel.deleteCategory(categoryId, (err) => {
+        if (err) {
+            // Xử lý lỗi nếu có
+            console.error("Error deleting category:", err);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+        // Nếu không có lỗi, redirect lại trang danh sách danh mục
+        res.redirect("/admin/cateList");
+    });
+};
+
+const renderCategoryEditPage = (req, res) => {
+    res.render("index", { page: "cateEdit" });
+};
+
+const renderOrderListPage = (req, res) => {
+    res.render("index", { page: "orderList" });
+};
+
+const renderOrderDetailPage = (req, res) => {
+    res.render("index", { page: "orderDetail" });
+};
+
+const renderUserListPage = (req, res) => {
+    res.render("index", { page: "userList" });
+};
 
 module.exports = {
     renderAdminHomePage,
@@ -65,6 +128,17 @@ module.exports = {
     renderAdminTypographyPage,
     renderAdminElementPage,
     renderAdminFormPage,
-    subPages,
-    renderSubPage
+    renderProductListPage,
+    renderProductCreatePage,
+    renderProductEditPage,
+    renderCategoryListPage,
+    renderCategoryCreatePage,
+    renderCategoryEditPage,
+    renderOrderListPage,
+    renderOrderDetailPage,
+    renderUserListPage,
+
+
+    addCategory,
+    deleteCategory
 };

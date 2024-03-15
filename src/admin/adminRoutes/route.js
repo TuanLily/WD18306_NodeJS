@@ -38,20 +38,16 @@ router.get("/404", (req, res) => {
     adminController.renderAdmin404Page(req, res, "404");
 });
 
-router.get("/cate-list", (req, res) => {
-    adminController.renderSubPage(req, res, "cate-list");
-});
-
-router.get("/:subPage", (req, res) => {
-    const subPage = req.params.subPage;
-    // eslint-disable-next-line no-prototype-builtins
-    if (adminController.subPages.hasOwnProperty(subPage)) {
-        adminController.renderSubPage(req, res, adminController.subPages[subPage]);
-    } else {
-        // Xử lý nếu trang con không tồn tại
-        adminController.renderAdminHomePage(req, res, "home");
-    }
-});
-
+router.get("/productList", adminController.renderProductListPage);
+router.get("/productCreate", adminController.renderProductCreatePage);
+router.get("/productEdit", adminController.renderProductEditPage);
+router.get("/cateList", adminController.renderCategoryListPage);
+router.get("/cateCreate", adminController.renderCategoryCreatePage);
+router.post("/cateCreate", adminController.addCategory);
+router.get("/cateDelete/:id", adminController.deleteCategory);
+router.get("/cateEdit", adminController.renderCategoryEditPage);
+router.get("/orderList", adminController.renderOrderListPage);
+router.get("/orderDetail", adminController.renderOrderDetailPage);
+router.get("/userList", adminController.renderUserListPage);
 
 module.exports = router;
