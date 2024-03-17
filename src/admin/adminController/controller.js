@@ -1,4 +1,5 @@
 const cateModel = require("../adminModel/cateModel");
+const productModel = require("../adminModel/productModel");
 
 const renderAdminHomePage = (req, res) => {
     res.render("index", { page: "home" }); // Render trang chính của admin
@@ -38,16 +39,58 @@ const renderAdmin404Page = (req, res) => {
 
 
 const renderProductListPage = (req, res) => {
-    res.render("index", { page: "productList" });
+    productModel.getAllProducts((err, products) => {
+        const formatPrice = (price) => {
+            // Logic định dạng giá ở đây, ví dụ:
+            return new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+            }).format(price);
+        };
+        if (err) {
+            console.error("Error fetching products:", err);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+        res.render("index", { page: "productList", products, formatPrice });
+    });
 };
 
 const renderProductCreatePage = (req, res) => {
-    res.render("index", { page: "productCreate" });
+    // Gọi hàm để lấy danh sách danh mục từ cơ sở dữ liệu
+    cateModel.getCategoryList((err, categories) => {
+        if (err) {
+            console.error("Error fetching categories:", err);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+        res.render("index", { page: "productCreate", categories });
+    });
+};
+
+const addProduct = (req, res) => {
+    // Lấy thông tin sản phẩm từ body của request
+    const { name, price, sale_price, description, categoryId } = req.body;
+
+    // Xử lý ảnh upload bằng Multer
+    const image = req.file.filename; // Đường dẫn của ảnh đã upload
+
+    // Gọi hàm để thêm sản phẩm vào cơ sở dữ liệu
+    productModel.addProduct(name, image, price, sale_price, description, categoryId, (err) => {
+        if (err) {
+            console.error("Error adding product:", err);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+        res.redirect("/admin/productList");
+    });
 };
 
 const renderProductEditPage = (req, res) => {
     res.render("index", { page: "productEdit" });
 };
+
+
 
 
 const renderCategoryListPage = (req, res) => {
@@ -172,9 +215,7 @@ module.exports = {
     renderAdminTypographyPage,
     renderAdminElementPage,
     renderAdminFormPage,
-    renderProductListPage,
-    renderProductCreatePage,
-    renderProductEditPage,
+
 
     renderOrderListPage,
     renderOrderDetailPage,
@@ -185,5 +226,13 @@ module.exports = {
     addCategory,
     deleteCategory,
     renderCategoryEditPage,
-    updateCategory
+    updateCategory,
+
+
+    renderProductListPage,
+
+    renderProductCreatePage,
+    addProduct,
+
+    renderProductEditPage,
 };

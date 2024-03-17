@@ -1,13 +1,16 @@
-
 const express = require("express");
 const path = require("path");
 require("dotenv").config(); // Load environment variables from .env file
+const bodyParser = require("body-parser");
 
 const app = express();
 
 // Sử dụng bodyParser để xử lý dữ liệu POST
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.use(express.static(path.join(__dirname, "src")));
+
 
 // Đặt cấu hình cho trang client
 const clientApp = express();
@@ -27,11 +30,8 @@ adminApp.use("/admin", require("./src/admin/adminRoutes/route.js"));
 app.use(clientApp);
 app.use(adminApp);
 
-
-
 //! Chạy port
 const port = process.env.PORT || 3000; // Sử dụng cổng mặc định là 3000 nếu không có biến môi trường PORT
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
-

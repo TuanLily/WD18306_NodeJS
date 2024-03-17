@@ -15,81 +15,44 @@
                 <th scope="col">Tên sản phẩm</th>
                 <th scope="col">Hình sản phẩm</th>
                 <th scope="col">Giá sản phẩm</th>
-                <th scope="col">Danh mục chứa sản phẩm</th>
                 <th scope="col" colspan="2">Hành động</th>
               </tr>
             </thead>
             <tbody id="productsTableBody">
+              <% products.forEach((product, index) => { %>
               <tr>
-                <th scope="row">1</th>
-                <td>Cà chua</td>
-                <td>Nữa để hình ảnh ở đây</td>
-                <td>30.000đ</td>
-                <td class="w-3">
-                  <a href="/admin/productEdit"
-                    ><i class="fa-solid fa-pen-to-square"></i
-                  ></a>
+                <th scope="row"><%= product.id %></th>
+                <td><%= product.name %></td>
+                <td>
+                  <img
+                    src="../../uploads/<%= product.image %>"
+                    alt="IMG"
+                    width="80"
+                  />
                 </td>
+                <td><%= formatPrice(product.price) %></td>
+                <!-- Sử dụng hàm formatPrice để định dạng giá -->
+                <td><%= product.category %></td>
                 <td class="w-3">
-                  <a href=""><i class="fa-solid fa-trash"></i></a>
+                  <a
+                    href="/admin/productEdit?id=<%= product.id %>"
+                    class="btn-edit mx-1"
+                    data-id="<%= product.id %>"
+                  >
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </a>
+                  <a
+                    href="/admin/productDelete/<%= product.id %>"
+                    class="btn-del"
+                    data-id="<%= product.id %>"
+                    data-title="<%= product.title %>"
+                    onclick="return confirm(`Bạn có chắc chắn muốn xóa danh mục '<%= product.name %>' không?`)"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </a>
                 </td>
               </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>Cà chua</td>
-                <td>Nữa để hình ảnh ở đây</td>
-                <td>30.000đ</td>
-                <td class="w-3">
-                  <a href="/admin/productEdit"
-                    ><i class="fa-solid fa-pen-to-square"></i
-                  ></a>
-                </td>
-                <td class="w-3">
-                  <a href=""><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>Cà chua</td>
-                <td>Nữa để hình ảnh ở đây</td>
-                <td>30.000đ</td>
-                <td class="w-3">
-                  <a href="/admin/productEdit"
-                    ><i class="fa-solid fa-pen-to-square"></i
-                  ></a>
-                </td>
-                <td class="w-3">
-                  <a href=""><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>Cà chua</td>
-                <td>Nữa để hình ảnh ở đây</td>
-                <td>30.000đ</td>
-                <td class="w-3">
-                  <a href="/admin/productEdit"
-                    ><i class="fa-solid fa-pen-to-square"></i
-                  ></a>
-                </td>
-                <td class="w-3">
-                  <a href=""><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>Cà chua</td>
-                <td>Nữa để hình ảnh ở đây</td>
-                <td>30.000đ</td>
-                <td class="w-3">
-                  <a href="/admin/productEdit"
-                    ><i class="fa-solid fa-pen-to-square"></i
-                  ></a>
-                </td>
-                <td class="w-3">
-                  <a href=""><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
+              <% }); %>
             </tbody>
           </table>
         </div>

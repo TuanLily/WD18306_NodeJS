@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const adminController = require("../adminController/controller");
+const upload = require("../../config/multer.js");
+
 
 
 // Route cho trang chính của admin
@@ -57,6 +59,8 @@ router.post("/cateEdit", adminController.updateCategory);
 //* Bắt đầu phần điều hướng phần sản phẩm
 router.get("/productList", adminController.renderProductListPage);
 router.get("/productCreate", adminController.renderProductCreatePage);
+// Đường dẫn để xử lý thêm sản phẩm mới
+router.post("/productCreate", upload.single("image"), adminController.addProduct);
 router.get("/productEdit", adminController.renderProductEditPage);
 //* Kết thúc phần điều hướng phần sản phẩm
 
