@@ -61,7 +61,11 @@ router.get("/productList", adminController.renderProductListPage);
 router.get("/productCreate", adminController.renderProductCreatePage);
 // Đường dẫn để xử lý thêm sản phẩm mới
 router.post("/productCreate", upload.single("image"), adminController.addProduct);
+router.get("/productDelete/:id", adminController.deleteProduct);
+
 router.get("/productEdit", adminController.renderProductEditPage);
+router.post("/productEdit", upload.single("image"), adminController.updateProduct);
+
 //* Kết thúc phần điều hướng phần sản phẩm
 
 

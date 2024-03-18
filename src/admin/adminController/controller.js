@@ -86,9 +86,107 @@ const addProduct = (req, res) => {
     });
 };
 
-const renderProductEditPage = (req, res) => {
-    res.render("index", { page: "productEdit" });
+// Hàm xóa danh mục
+const deleteProduct = (req, res) => {
+    // Lấy categoryId từ tham số trong URL
+    const productId = req.params.id;
+
+    // Gọi hàm để xóa danh mục từ cơ sở dữ liệu
+    productModel.deleteProduct(productId, (err) => {
+        if (err) {
+            // Xử lý lỗi nếu có
+            console.error("Error deleting category:", err);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+        // Nếu không có lỗi, redirect lại trang danh sách danh mục
+        res.redirect("/admin/productList");
+    });
 };
+
+const renderProductEditPage = (req, res) => {
+    // Lấy productId từ query parameters
+    const productId = req.query.id;
+
+    if (productId) {
+        // Trang hiện tại đang ở đường dẫn /productEdit?id=:id
+        // Gọi hàm để lấy thông tin sản phẩm từ cơ sở dữ liệu
+        productModel.getProductById(productId, (err, product) => {
+            if (err) {
+                // Xử lý lỗi nếu có
+                console.error("Error fetching product:", err);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
+            if (!product) {
+                res.status(404).send("Product not found");
+                return;
+            }
+            // Nếu không có lỗi, tiếp tục lấy danh sách danh mục từ cơ sở dữ liệu
+            cateModel.getCategoryList((err, categories) => {
+                if (err) {
+                    // Xử lý lỗi nếu có
+                    console.error("Error fetching categories:", err);
+                    res.status(500).send("Internal Server Error");
+                    return;
+                }
+                // Nếu không có lỗi, render trang và truyền thông tin sản phẩm và danh sách danh mục vào template
+                res.render("index", { page: "productEdit", product: product, categories: categories });
+            });
+        });
+    } else {
+        // Trang hiện tại không có productId trong query parameters
+        // Thực hiện logic tương ứng
+        res.render("index", { page: "productEdit" });
+    }
+};
+
+// Hàm xử lý yêu cầu cập nhật sản phẩm
+const updateProduct = (req, res) => {
+    const productId = req.query.id;
+    const newData = {
+        name: req.body.name,
+        price: req.body.price,
+        sale_price: req.body.sale_price,
+        description: req.body.description,
+        cate_id: req.body.cate_id
+    };
+
+    // Kiểm tra xem có file ảnh mới được tải lên hay không
+    if (!req.file) {
+        // Nếu không có ảnh mới, lấy thông tin sản phẩm từ cơ sở dữ liệu
+        productModel.getProductById(productId, (err, product) => {
+            if (err) {
+                console.error("Error fetching product:", err);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
+            newData.image = product.image;
+
+            productModel.updateProduct(productId, newData, (updateErr) => {
+                if (updateErr) {
+                    console.error("Error updating product:", updateErr);
+                    res.status(500).send("Internal Server Error");
+                    return;
+                }
+                res.redirect("/admin/productList");
+            });
+        });
+    } else {
+        // Nếu có chọn ảnh mới, cập nhật đường dẫn ảnh mới
+        newData.image = req.file.filename;
+
+        productModel.updateProduct(productId, newData, (updateErr) => {
+            if (updateErr) {
+                console.error("Error updating product:", updateErr);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
+            res.redirect("/admin/productList");
+        });
+    }
+};
+
 
 
 
@@ -230,9 +328,9 @@ module.exports = {
 
 
     renderProductListPage,
-
     renderProductCreatePage,
     addProduct,
-
+    deleteProduct,
     renderProductEditPage,
+    updateProduct
 };
