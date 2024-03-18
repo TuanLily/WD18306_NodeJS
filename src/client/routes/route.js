@@ -28,9 +28,11 @@ router.get("/cart", (req, res) => {
 router.get("/checkout", (req, res) => {
     controller.renderCheckoutPage(req, res, "checkout");
 });
-router.get("/shop-detail", (req, res) => {
-    controller.renderShopDetailPage(req, res, "shop-detail");
+router.get("/shop-detail/:id", (req, res) => {
+    const productId = req.params.id; // Lấy productId từ URL
+    controller.renderShopDetailPage(req, res, "shop-detail", productId);
 });
+
 router.get("/contact", (req, res) => {
     controller.renderContactPage(req, res, "contact");
 });

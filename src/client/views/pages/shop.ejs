@@ -3,10 +3,10 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
-        <h2>Shop</h2>
+        <h2>Cửa hàng</h2>
         <ul class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Shop</li>
+          <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+          <li class="breadcrumb-item active">Cửa hàng</li>
         </ul>
       </div>
     </div>
@@ -23,20 +23,20 @@
           <div class="product-item-filter row">
             <div class="col-12 col-sm-8 text-center text-sm-left">
               <div class="toolbar-sorter-right">
-                <span>Sort by </span>
+                <span>Sắp xếp </span>
                 <select
                   id="basic"
                   class="selectpicker show-tick form-control"
                   data-placeholder="$ USD"
                 >
-                  <option data-display="Select">Nothing</option>
-                  <option value="1">Popularity</option>
-                  <option value="2">High Price → High Price</option>
-                  <option value="3">Low Price → High Price</option>
-                  <option value="4">Best Selling</option>
+                  <option data-display="Select">Mặc định</option>
+                  <option value="1">Phổ biến</option>
+                  <option value="2">Giá cao → Giá thấp</option>
+                  <option value="3">Giá thấp → Giá cao</option>
+                  <option value="4">Mua nhiều</option>
                 </select>
               </div>
-              <p>Showing all 4 results</p>
+              <p>Hiển thị kết quả với 4 sản phẩm</p>
             </div>
             <div class="col-12 col-sm-4 text-center text-sm-right">
               <ul class="nav nav-tabs ml-auto">
@@ -58,7 +58,6 @@
             </div>
           </div>
 
-          <!-- Đoạn code HTML hiển thị sản phẩm -->
           <div class="product-categorie-box">
             <div class="tab-content">
               <div
@@ -67,7 +66,7 @@
                 id="grid-view"
               >
                 <div class="row">
-                  <% products.forEach(product => { %>
+                  <% products.forEach(product=> { %>
                   <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
                     <div class="products-single fix">
                       <div class="box-img-hover">
@@ -89,10 +88,10 @@
                           <ul>
                             <li>
                               <a
-                                href="#"
+                                href="shop-detail/<%= product.id %>"
                                 data-toggle="tooltip"
                                 data-placement="right"
-                                title="View"
+                                title="Xem chi tiết"
                                 ><i class="fas fa-eye"></i
                               ></a>
                             </li>
@@ -101,27 +100,19 @@
                                 href="#"
                                 data-toggle="tooltip"
                                 data-placement="right"
-                                title="Compare"
-                                ><i class="fas fa-sync-alt"></i
-                              ></a>
-                            </li>
-                            <li>
-                              <a
-                                href="#"
-                                data-toggle="tooltip"
-                                data-placement="right"
-                                title="Add to Wishlist"
-                                ><i class="far fa-heart"></i
-                              ></a>
+                                title="Thêm vào mục yêu thích"
+                              >
+                                <i class="far fa-heart"></i>
+                              </a>
                             </li>
                           </ul>
-                          <a class="cart" href="#">Add to Cart</a>
+                          <a class="cart" href="#">Thêm giỏ hàng</a>
                         </div>
                       </div>
                       <div class="why-text">
                         <h4><%= product.name %></h4>
-                        <% if (product.sale_price !== product.price) { %>
-                        <h6><del><%= formatPrice(product.price) %></del></h6>
+                        <% if (product.sale_price !==product.price) { %>
+                        <h6><del> <%= formatPrice(product.price) %> </del></h6>
                         <h5><%= formatPrice(product.sale_price) %></h5>
                         <% } else { %>
                         <h5><%= formatPrice(product.price) %></h5>
@@ -131,6 +122,69 @@
                   </div>
                   <% }); %>
                 </div>
+              </div>
+              <div role="tabpanel" class="tab-pane fade" id="list-view">
+                <% products.forEach(product => { %>
+                <div class="list-view-box">
+                  <div class="row">
+                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                      <div class="products-single fix">
+                        <div class="box-img-hover">
+                          <% if (product.sale_price) { %>
+                          <div class="type-lb">
+                            <p class="sale">Sale</p>
+                          </div>
+                          <% } else if (product.new) { %>
+                          <div class="type-lb">
+                            <p class="new">New</p>
+                          </div>
+                          <% } %>
+                          <img
+                            src="../uploads/<%= product.image %>"
+                            class="img-fluid"
+                            alt="Image"
+                          />
+                          <div class="mask-icon">
+                            <ul>
+                              <li>
+                                <a
+                                  href="shop-detail/<%= product.id %>"
+                                  data-toggle="tooltip"
+                                  data-placement="right"
+                                  title="Xem chi tiết"
+                                  ><i class="fas fa-eye"></i
+                                ></a>
+                              </li>
+                              <li>
+                                <a
+                                  href="#"
+                                  data-toggle="tooltip"
+                                  data-placement="right"
+                                  title="Thêm vào mục yêu thích"
+                                  ><i class="far fa-heart"></i
+                                ></a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
+                      <div class="why-text full-width">
+                        <h4><%= product.name %></h4>
+                        <% if (product.sale_price !==product.price) { %>
+                        <h6><del> <%= formatPrice(product.price) %> </del></h6>
+                        <h5><%= formatPrice(product.sale_price) %></h5>
+                        <% } else { %>
+                        <h5><%= formatPrice(product.price) %></h5>
+                        <% } %>
+                        <p><%= product.description %></p>
+                        <a class="btn hvr-hover" href="#">Add to Cart</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <% }); %>
               </div>
             </div>
           </div>
@@ -142,7 +196,7 @@
             <form action="#">
               <input
                 class="form-control"
-                placeholder="Search here..."
+                placeholder="Tìm sản phẩm..."
                 type="text"
               />
               <button type="submit"><i class="fa fa-search"></i></button>
@@ -150,7 +204,7 @@
           </div>
           <div class="filter-sidebar-left">
             <div class="title-left">
-              <h3>Categories</h3>
+              <h3>Danh mục</h3>
             </div>
             <div
               class="list-group list-group-collapse list-group-sm list-group-tree"
@@ -164,7 +218,8 @@
                   data-toggle="collapse"
                   aria-expanded="true"
                   aria-controls="sub-men1"
-                  >Fruits & Drinks <small class="text-muted">(100)</small>
+                  >Fruits & Drinks
+                  <small class="text-muted">(100)</small>
                 </a>
                 <div
                   class="collapse show"

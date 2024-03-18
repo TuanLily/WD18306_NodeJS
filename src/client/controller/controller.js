@@ -45,8 +45,57 @@ const renderCheckoutPage = (req, res) => {
     res.render("index", { page: "checkout" }); // Render trang "Checkout"
 };
 const renderShopDetailPage = (req, res) => {
-    res.render("index", { page: "shop-detail" }); // Render trang "shop-detail"
+    const productId = req.params.id; // Lấy productId từ URL
+
+    // Hàm định dạng giá
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+        }).format(price);
+    };
+
+    // Hàm lấy thông tin sản phẩm và sản phẩm ngẫu nhiên
+    const getProductInfo = new Promise((resolve, reject) => {
+        productModel.getProductById(productId, (err, product) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(product);
+        });
+    });
+
+    const getRandomProductInfo = new Promise((resolve, reject) => {
+        productModel.getRandomProducts((err, randomProduct) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(randomProduct);
+        });
+    });
+
+    // Chờ cả hai hàm lấy dữ liệu hoàn thành trước khi render trang
+    Promise.all([getProductInfo, getRandomProductInfo])
+        .then(([product, randomProduct]) => {
+            if (!product) {
+                res.status(404).send("Product not found");
+                return;
+            }
+            res.render("index", {
+                page: "shop-detail",
+                product: product,
+                randomProduct: randomProduct,
+                formatPrice: formatPrice,
+            });
+        })
+        .catch((err) => {
+            console.error("Error fetching product:", err);
+            res.status(500).send("Internal Server Error");
+        });
 };
+
 const renderContactPage = (req, res) => {
     res.render("index", { page: "contact" }); // Render trang "contect"
 };
