@@ -1,4 +1,7 @@
 // controller.js
+const productModel = require("../model/product");
+
+
 const renderHomePage = (req, res) => {
     res.render("index", { page: "home" }); // Render trang chính
 };
@@ -14,9 +17,30 @@ const renderPostPage = (req, res) => {
 const renderCartPage = (req, res) => {
     res.render("index", { page: "cart" }); // Render trang "cart"
 };
+
+
 const renderShopPage = (req, res) => {
-    res.render("index", { page: "shop" }); // Render trang "shop"
+    // Lấy danh sách sản phẩm từ cơ sở dữ liệu
+    productModel.getAllProducts((err, products) => {
+        const formatPrice = (price) => {
+            // Logic định dạng giá ở đây, ví dụ:
+            return new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+            }).format(price);
+        };
+        if (err) {
+            console.error("Error fetching products:", err);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+        // Sau khi lấy được danh sách sản phẩm, render trang "shop" với dữ liệu sản phẩm
+        res.render("index", { page: "shop", products: products, formatPrice });
+    });
 };
+
+
+
 const renderCheckoutPage = (req, res) => {
     res.render("index", { page: "checkout" }); // Render trang "Checkout"
 };

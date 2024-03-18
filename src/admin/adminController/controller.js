@@ -151,7 +151,6 @@ const updateProduct = (req, res) => {
         description: req.body.description,
         cate_id: req.body.cate_id
     };
-
     // Kiểm tra xem có file ảnh mới được tải lên hay không
     if (!req.file) {
         // Nếu không có ảnh mới, lấy thông tin sản phẩm từ cơ sở dữ liệu
@@ -186,7 +185,6 @@ const updateProduct = (req, res) => {
         });
     }
 };
-
 
 
 

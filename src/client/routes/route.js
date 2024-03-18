@@ -22,9 +22,9 @@ router.get("/cart", (req, res) => {
     controller.renderCartPage(req, res, "cart");
 });
 
-router.get("/shop", (req, res) => {
-    controller.renderShopPage(req, res, "shop");
-});
+// router.get("/shop", (req, res) => {
+//     controller.renderShopPage(req, res, "shop");
+// });
 router.get("/checkout", (req, res) => {
     controller.renderCheckoutPage(req, res, "checkout");
 });
@@ -43,5 +43,8 @@ router.get("/login", (req, res) => {
 router.get("/register", (req, res) => {
     controller.renderRegisterPage(req, res, "register");
 });
+
+router.get("/shop", controller.renderShopPage);
+
 
 module.exports = router;
