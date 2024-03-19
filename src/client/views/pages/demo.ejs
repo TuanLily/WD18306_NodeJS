@@ -1,0 +1,111 @@
+<div class="row">
+    <div class="col-lg-12">
+      <div class="special-menu text-center">
+        <div class="button-group filter-button-group">
+          <button
+            class="active"
+            id="all-tab"
+            data-toggle="tab"
+            data-target="#all"
+            role="tab"
+            aria-controls="all"
+            aria-selected="true"
+            data-filter="*"
+          >
+            All
+          </button>
+          <!-- Sử dụng vòng lặp để tạo các tab từ dữ liệu danh mục -->
+          <% categories.forEach(category => { %>
+          <button
+            id="tab-<%= category.id %>"
+            class="tab-button"
+            data-toggle="tab"
+            data-target="#category<%= category.id %>"
+            role="tab"
+            aria-controls="category<%= category.id %>"
+            aria-selected="false"
+            data-filter="<%= category.id %>"
+          >
+            <%= category.name %>
+          </button>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="tab-content">
+    <!-- Sử dụng vòng lặp để tạo các tab pane từ dữ liệu danh mục -->
+    <% categories.forEach(category => { %>
+    <div
+      class="tab-pane fade"
+      id="category<%= category.id %>"
+      role="tabpanel"
+      aria-labelledby="tab-<%= category.id %>"
+    >
+      <div class="row special-list">
+        <% products.forEach(product => { %>
+        <% if (product.cate_id === category.id) { %>
+        <div
+          class="col-lg-3 col-md-6 special-grid best-seller"
+          data-category="<%= product.cate_id %>"
+        >
+        <div class="products-single fix">
+            <div class="box-img-hover">
+              <% if (product.sale_price) { %>
+              <div class="type-lb">
+                <p class="sale">Sale</p>
+              </div>
+              <% } else if (product.new) { %>
+              <div class="type-lb">
+                <p class="new">New</p>
+              </div>
+              <% } %>
+              <img
+                src="../uploads/<%= product.image %>"
+                class="img-fluid"
+                alt="Image"
+              />
+              <div class="mask-icon">
+                <ul>
+                  <li>
+                    <a
+                      href="shop-detail/<%= product.id %>"
+                      data-toggle="tooltip"
+                      data-placement="right"
+                      title="Xem chi tiết"
+                      ><i class="fas fa-eye"></i
+                    ></a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      data-toggle="tooltip"
+                      data-placement="right"
+                      title="Thêm vào mục yêu thích"
+                    >
+                      <i class="far fa-heart"></i>
+                    </a>
+                  </li>
+                </ul>
+                <a class="cart" href="#">Thêm giỏ hàng</a>
+              </div>
+            </div>
+            <div class="why-text">
+              <h4><%= product.name %></h4>
+              <% if (product.sale_price !==product.price) { %>
+              <h6><del> <%= formatPrice(product.price) %> </del></h6>
+              <h5><%= formatPrice(product.sale_price) %></h5>
+              <% } else { %>
+              <h5><%= formatPrice(product.price) %></h5>
+              <% } %>
+            </div>
+          </div>
+        </div>
+        <% } %>
+        <% }); %>
+      </div>
+    </div>
+    <% }); %>
+  </div>
+  

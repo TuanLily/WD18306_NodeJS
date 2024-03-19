@@ -1,11 +1,36 @@
 // controller.js
 const productModel = require("../model/product");
+const cateModel = require("../model/category");
 
 
 const renderHomePage = (req, res) => {
-    res.render("index", { page: "home" }); // Render trang chính
-};
+    cateModel.getCategoryList((err, categories) => {
+        const formatPrice = (price) => {
+            // Logic định dạng giá ở đây, ví dụ:
+            return new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+            }).format(price);
+        };
 
+        if (err) {
+            console.error("Error getting category list:", err);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+
+        productModel.getAllProducts((err, products) => {
+            if (err) {
+                console.error("Error getting product list:", err);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
+
+            // Render trang chính và truyền dữ liệu danh mục và sản phẩm vào template
+            res.render("index", { page: "home", categories, products, formatPrice });
+        });
+    });
+};
 const renderAboutPage = (req, res) => {
     res.render("index", { page: "about" }); // Render trang "about"
 };
