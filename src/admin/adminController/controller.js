@@ -1,5 +1,7 @@
 const cateModel = require("../adminModel/cateModel");
 const productModel = require("../adminModel/productModel");
+const fs = require("fs");
+const path = require("path");
 
 const renderAdminHomePage = (req, res) => {
     res.render("index", { page: "home" }); // Render trang chính của admin
@@ -86,21 +88,46 @@ const addProduct = (req, res) => {
     });
 };
 
-// Hàm xóa danh mục
+// Hàm xóa sản phẩm
 const deleteProduct = (req, res) => {
-    // Lấy categoryId từ tham số trong URL
+    // Lấy productId từ tham số trong URL
     const productId = req.params.id;
 
-    // Gọi hàm để xóa danh mục từ cơ sở dữ liệu
-    productModel.deleteProduct(productId, (err) => {
+    // Gọi hàm để lấy thông tin sản phẩm từ cơ sở dữ liệu
+    productModel.getProductById(productId, (err, product) => {
         if (err) {
-            // Xử lý lỗi nếu có
-            console.error("Error deleting category:", err);
+            console.error("Error getting product:", err);
             res.status(500).send("Internal Server Error");
             return;
         }
-        // Nếu không có lỗi, redirect lại trang danh sách danh mục
-        res.redirect("/admin/productList");
+
+        if (!product) {
+            res.status(404).send("Product not found");
+            return;
+        }
+
+        // Khai báo đường dẫn của thư mục uploads
+        const uploadDir = path.resolve(__dirname, "../../uploads");
+
+        // Xóa file ảnh từ thư mục upload
+        fs.unlink(`${uploadDir}/${product.image}`, (err) => {
+            if (err) {
+                console.error("Error deleting image:", err);
+                res.status(500).send("Internal Server Error");
+                return;
+            }
+
+            // Gọi hàm để xóa sản phẩm từ cơ sở dữ liệu
+            productModel.deleteProduct(productId, (err) => {
+                if (err) {
+                    console.error("Error deleting product:", err);
+                    res.status(500).send("Internal Server Error");
+                    return;
+                }
+
+                res.redirect("/admin/productList");
+            });
+        });
     });
 };
 

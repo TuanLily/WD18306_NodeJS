@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         // Xử lý tên file tùy ý ở đây
-        cb(null, file.originalname);
+        cb(null, Date.now() + "_" + file.originalname);
     }
 });
 

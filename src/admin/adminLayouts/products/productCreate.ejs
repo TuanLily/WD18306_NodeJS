@@ -53,11 +53,11 @@
               type="number"
               class="form-control"
               name="sale_price"
-              id="inputPrice"
+              id="inputSalePrice"
               aria-describedby="price"
               placeholder="đ"
             />
-            <div class="priceError my-2"></div>
+            <div class="salePriceError my-2"></div>
           </div>
           <div class="mb-3">
             <label for="inputDetail" class="form-label">Mô tả</label>
@@ -69,7 +69,9 @@
             <div class="detailError my-2"></div>
           </div>
           <div class="mb-3 col-6">
-            <label for="checkCategory" class="form-label">Danh mục sản phẩm *</label>
+            <label for="checkCategory" class="form-label"
+              >Danh mục sản phẩm *</label
+            >
             <select
               class="form-select form-in"
               id="checkCategory"
@@ -94,3 +96,101 @@
   </div>
 </div>
 <!-- Form End -->
+
+<script>
+  document
+    .querySelector(".form-product")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      const productName = document.getElementById("inputProduct").value.trim();
+      const productImage = document.getElementById("formFileMultiple").value;
+      const productPrice = document.getElementById("inputPrice").value.trim();
+      const productSalePrice = document
+        .getElementById("inputSalePrice")
+        .value.trim();
+      const categoryId = document.getElementById("checkCategory").value;
+
+      const productError = document.querySelector(".productError");
+      const imgError = document.querySelector(".imgError");
+      const priceError = document.querySelector(".priceError");
+      const salePriceError = document.querySelector(".salePriceError");
+      const categoryError = document.querySelector(".cateError");
+
+      // Thiết lập một biến để theo dõi lỗi
+      let hasError = false;
+
+      // Bắt lỗi tên sản phẩm
+      if (!productName) {
+        productError.innerHTML = `<span class="text-danger">Tên sản phẩm không được để trống</span>`;
+        hasError = true;
+      } else if (productName.length < 2) {
+        productError.innerHTML = `<span class="text-danger">Tên sản phẩm không được dưới 2 ký tự</span>`;
+        hasError = true;
+      } else {
+        productError.innerHTML = "";
+      }
+
+      // Bắt lỗi hình ảnh sản phẩm
+      if (!productImage) {
+        imgError.innerHTML = `<span class="text-danger">Hình ảnh không được để trống</span>`;
+        hasError = true;
+      } else {
+        const imageFormat = ["image/png", "image/jpeg", "image/jpg"];
+        const selectedFile =
+          document.getElementById("formFileMultiple").files[0];
+        if (!imageFormat.includes(selectedFile.type)) {
+          imgError.innerHTML = `<span class="text-danger">Vui lòng chọn file ảnh có định dạng PNG, JPEG hoặc JPG</span>`;
+          hasError = true;
+        } else {
+          imgError.innerHTML = "";
+        }
+      }
+
+      // Bắt lỗi giá sản phẩm
+      if (!productPrice) {
+        priceError.innerHTML = `<span class="text-danger">Giá sản phẩm không được để trống</span>`;
+        hasError = true;
+      } else if (productPrice < 0) {
+        priceError.innerHTML = `<span class="text-danger">Tên sản phẩm không được là sô âm</span>`;
+        hasError = true;
+      } else {
+        priceError.innerHTML = "";
+      }
+
+      // Bắt lỗi giá giảm
+      if (!productSalePrice) {
+        salePriceError.innerHTML = `<span class="text-danger">Giá giảm không được để trống</span>`;
+        hasError = true;
+      } else if (productSalePrice < 0) {
+        salePriceError.innerHTML = `<span class="text-danger">Giá giảm không được là số âm</span>`;
+        hasError = true;
+      } else if (parseInt(productSalePrice) >= parseInt(productPrice)) {
+        salePriceError.innerHTML = `<span class="text-danger">Giá giảm phải thấp hơn giá gốc</span>`;
+        hasError = true;
+      } else {
+        salePriceError.innerHTML = "";
+      }
+
+      // Bắt lỗi danh mục sản phẩm
+      if (!categoryId) {
+        categoryError.innerHTML = `<span class="text-danger">Vui lòng chọn danh mục sản phẩm</span>`;
+        hasError = true;
+      } else {
+        categoryError.innerHTML = "";
+      }
+
+      // Kiểm tra cờ lỗi
+      if (!hasError) {
+        Swal.fire({
+          icon: "success",
+          title: "Thành công!",
+          text: "Thêm phẩm mới thành công!",
+          showConfirmButton: false,
+          timer: 1500, // Tắt tự động sau 1.5 giây
+          didClose: () => {
+            this.submit();
+          },
+        });
+      }
+    });
+</script>
