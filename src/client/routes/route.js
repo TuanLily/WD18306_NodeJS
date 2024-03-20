@@ -2,11 +2,16 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../controller/controller");
+// const { LocalStorage } = require("node-localstorage");
+
+// const localStorage = new LocalStorage("./scratch");
 
 // Route cho trang chính
 router.get("/", (req, res) => {
-    controller.renderHomePage(req, res, "home");
+    const user = req.session.user; // Lấy thông tin người dùng từ session
+    controller.renderHomePage(req, res, user); // Truyền biến user vào hàm renderHomePage
 });
+
 
 // Route cho trang about
 router.get("/about", (req, res) => {
@@ -39,9 +44,8 @@ router.get("/contact", (req, res) => {
 router.get("/account", (req, res) => {
     controller.renderAccountPage(req, res, "account");
 });
-router.get("/login", (req, res) => {
-    controller.renderLoginPage(req, res, "login");
-});
+
+
 router.get("/register", (req, res) => {
     controller.renderRegisterPage(req, res, "register");
 });
@@ -51,5 +55,23 @@ router.get("/shop", controller.renderShopPage);
 router.get("/search", controller.searchProducts);
 
 
+router.get("/login", (req, res) => {
+    controller.renderLoginPage(req, res, "login");
+});
+
+router.post("/login", controller.postLogin);
+
+router.post("/logout", (req, res) => {
+    // Xóa thông tin người dùng khỏi session hoặc cookie (nếu có)
+    req.session.destroy((err) => {
+        if (err) {
+            console.error("Error logging out:", err);
+            res.status(500).send("Internal Server Error");
+            return;
+        }
+        // Chuyển hướng người dùng đến trang chính hoặc trang đăng nhập sau khi đăng xuất thành công
+        res.redirect("/");
+    });
+});
 
 module.exports = router;

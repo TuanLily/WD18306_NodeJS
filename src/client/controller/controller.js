@@ -1,9 +1,15 @@
 // controller.js
 const productModel = require("../model/product");
 const cateModel = require("../model/category");
+const userModel = require("../model/user");
+
+
+// const bcrypt = require('bcrypt'); // Để mã hóa và so sánh mật khẩu
+
 
 
 const renderHomePage = (req, res) => {
+    const user = req.session.user;
     cateModel.getCategoryList((err, categories) => {
         const formatPrice = (price) => {
             // Logic định dạng giá ở đây, ví dụ:
@@ -27,20 +33,22 @@ const renderHomePage = (req, res) => {
             }
 
             // Render trang chính và truyền dữ liệu danh mục và sản phẩm vào template
-            res.render("index", { page: "home", categories, products, formatPrice });
+            res.render("index", { page: "home", user: user, categories, products, formatPrice });
         });
     });
 };
+
+
 const renderAboutPage = (req, res) => {
-    res.render("index", { page: "about" }); // Render trang "about"
+    res.render("index", { page: "about", user: req.session.user }); // Render trang "about"
 };
 
 const renderPostPage = (req, res) => {
-    res.render("index", { page: "post" }); // Render trang "post"
+    res.render("index", { page: "post", user: req.session.user }); // Render trang "post"
 };
 
 const renderCartPage = (req, res) => {
-    res.render("index", { page: "cart" }); // Render trang "cart"
+    res.render("index", { page: "cart", user: req.session.user }); // Render trang "cart"
 };
 
 
@@ -60,14 +68,14 @@ const renderShopPage = (req, res) => {
             return;
         }
         // Sau khi lấy được danh sách sản phẩm, render trang "shop" với dữ liệu sản phẩm
-        res.render("index", { page: "shop", products: products, formatPrice });
+        res.render("index", { page: "shop", user: req.session.user, products: products, formatPrice });
     });
 };
 
 
 
 const renderCheckoutPage = (req, res) => {
-    res.render("index", { page: "checkout" }); // Render trang "Checkout"
+    res.render("index", { page: "checkout", user: req.session.user }); // Render trang "Checkout"
 };
 const renderShopDetailPage = (req, res) => {
     const productId = req.params.id; // Lấy productId từ URL
@@ -109,7 +117,7 @@ const renderShopDetailPage = (req, res) => {
                 return;
             }
             res.render("index", {
-                page: "shop-detail",
+                page: "shop-detail", user: req.session.user,
                 product: product,
                 randomProduct: randomProduct,
                 formatPrice: formatPrice,
@@ -122,13 +130,28 @@ const renderShopDetailPage = (req, res) => {
 };
 
 const renderContactPage = (req, res) => {
-    res.render("index", { page: "contact" }); // Render trang "contect"
+    res.render("index", { page: "contact" ,user: req.session.user}); // Render trang "contect"
 };
 const renderAccountPage = (req, res) => {
-    res.render("index", { page: "account" }); // Render trang "contect"
+    res.render("index", { page: "account" ,user: req.session.user}); // Render trang "contect"
 };
+
 const renderLoginPage = (req, res) => {
     res.render("index", { page: "login" }); // Render trang "contect"
+};
+
+const postLogin = (req, res) => {
+    const { email, password } = req.body; // Sửa từ username thành email
+    userModel.loginUser(email, password, (error, user) => { // Thêm tham số error
+        if (error || !user || user.password !== password) {
+            res.redirect("/login");
+        } else {
+            req.session.user = user;
+
+            // res.send(req.session.user = user);
+            res.redirect("/");
+        }
+    });
 };
 const renderRegisterPage = (req, res) => {
     res.render("index", { page: "register" }); // Render trang "contect"
@@ -159,8 +182,14 @@ module.exports = {
     renderShopDetailPage,
     renderContactPage,
     renderAccountPage,
+
+
+    searchProducts,
+
+
+    postLogin,
     renderLoginPage,
     renderRegisterPage,
 
-    searchProducts
+
 };

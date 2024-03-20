@@ -1,4 +1,6 @@
 const express = require("express");
+const session = require("express-session");
+
 const path = require("path");
 require("dotenv").config(); // Load environment variables from .env file
 const bodyParser = require("body-parser");
@@ -10,6 +12,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "src")));
+
+app.use(session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: true
+}));
 
 
 // Đặt cấu hình cho trang client

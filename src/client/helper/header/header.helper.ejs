@@ -1,3 +1,40 @@
+<style>
+  /* Đặt màu cho nền và chữ trong nút dropdown */
+  .btn-outline-success {
+    color: #b0b434; /* Đặt màu chữ */
+    border-color: #b0b434; /* Đặt màu viền */
+  }
+  /* Đặt màu chữ khi di chuột qua nút dropdown */
+  .btn-outline-success:hover {
+    color: #8c8c00; /* Đặt màu chữ khi di chuột qua */
+    border-color: #8c8c00; /* Đặt màu viền khi di chuột qua */
+    background-color: transparent; /* Đảm bảo rằng nền không thay đổi */
+  }
+  .btn-outline-success:not(:disabled):not(.disabled).active,
+  .btn-outline-success:not(:disabled):not(.disabled):active,
+  .show > .btn-outline-success.dropdown-toggle {
+    color: #fff;
+    background-color: #8c8c00;
+    border-color: #8c8c00;
+  }
+  .btn-outline-success:not(:disabled):not(.disabled).active:focus,
+  .btn-outline-success:not(:disabled):not(.disabled):active:focus,
+  .show > .btn-outline-success.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem #85852b7a;
+  }
+  /* Đặt màu cho nền và chữ trong dropdown menu */
+  .dropdown-menu {
+    background-color: #b0b434;
+  }
+  .dropdown-item {
+    color: white; /* Đặt màu chữ là trắng */
+  }
+  /* Đặt màu chữ khi di chuột qua các mục dropdown */
+  .dropdown-item:hover {
+    background-color: #8c8c00; /* Đặt màu nền khi di chuột qua */
+  }
+</style>
+
 <div class="main-top">
   <div class="container-fluid">
     <div class="row">
@@ -30,19 +67,52 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <% if (!user) { %>
         <div class="login-box">
           <select
-              id="basic"
-              class="selectpicker show-tick form-control"
-              data-placeholder="Sign In"
-              onchange="handleSelection(this)"
+            id="basic"
+            class="selectpicker show-tick form-control"
+            data-placeholder="Sign In"
+            onchange="handleSelection(this)"
           >
-              <option selected>Đăng nhập/Đăng ký</option>
-              <option value="/login">Đăng nhập</option>
-              <option value="/register">Đăng ký</option>
+            <option selected>Đăng nhập/Đăng ký</option>
+            <option value="/login">Đăng nhập</option>
+            <option value="/register">Đăng ký</option>
           </select>
-      </div>
-           
+        </div>
+        <% } else { %>
+        <div class="login-box mx-3">
+          <div class="dropdown">
+            <button
+              class="btn btn-outline-success dropdown-toggle"
+              type="button"
+              id="userDropdown"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <img src="../../public/images/man.png" alt="img" width="30" />
+
+              <%= user.fullname %>
+            </button>
+            <div
+              class="dropdown-menu dropdown-menu-right"
+              aria-labelledby="userDropdown"
+            >
+              <a class="dropdown-item" href="#" id="userInfo"
+                ><i class="fas fa-user"></i> Thông tin tài khoản</a
+              >
+              <div class="dropdown-divider"></div>
+              <form action="/logout" method="post">
+                <button type="submit" class="dropdown-item">
+                  <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <% } %>
+
         <div class="text-slid-box">
           <div id="offer-box" class="carouselTicker">
             <ul class="offer-box">
@@ -68,9 +138,9 @@
 
 <script>
   function handleSelection(select) {
-      const selectedValue = select.value;
-      if (selectedValue) {
-          window.location.href = selectedValue;
-      }
+    const selectedValue = select.value;
+    if (selectedValue) {
+      window.location.href = selectedValue;
+    }
   }
 </script>

@@ -3,13 +3,13 @@
   <div class="row g-4">
     <div class="col-12">
       <div class="bg-light rounded h-100 p-4">
-        <nav aria-label="breadcrumb">
+        <!-- <nav aria-label="breadcrumb">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
             <li class="breadcrumb-item"><a href="#">Category</a></li>
             <li class="breadcrumb-item active" aria-current="page">Product</li>
           </ol>
-        </nav>
+        </nav> -->
         <h6 class="mb-4">Quản lý tài khoản khách hàng</h6>
         <div class="table-responsive">
           <table class="table">
@@ -24,67 +24,29 @@
               </tr>
             </thead>
             <tbody id="userTableBody">
+              <% users.forEach(user=> { %>
               <tr>
-                <th scope="row">1</th>
-                <td>Tuấn</td>
-                <td>Cần thơ</td>
-                <td>hhhh@gmail.com</td>
-                <td>042352352</td>
+                <th scope="row"><%= user.id %></th>
+                <td><%= user.fullname %></td>
+                <td><%= user.email %></td>
+                <td><%= user.tel %></td>
+                <td><%= user.address %></td>
                 <td class="w-3">
-                  <a href=""><i class="fa-solid fa-eye"></i></a>
-                </td>
-                <td class="w-3">
-                  <a href=""><i class="fa-solid fa-trash"></i></a>
+                  <a href="/admin/cateEdit?id" class="btn-edit mx-2" data-id="">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </a>
+                  <a
+                    href="/admin/cateDelete/"
+                    class="btn-del"
+                    data-id=""
+                    data-title=""
+                    onclick="return confirm(`Bạn có chắc chắn muốn xóa danh mục '' không?`)"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </a>
                 </td>
               </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>Tuấn</td>
-                <td>10</td>
-                <td>330.000đ</td>
-                <td class="w-3">
-                  <a href=""><i class="fa-solid fa-eye"></i></a>
-                </td>
-                <td class="w-3">
-                  <a href=""><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>Tuấn</td>
-                <td>10</td>
-                <td>330.000đ</td>
-                <td class="w-3">
-                  <a href=""><i class="fa-solid fa-eye"></i></a>
-                </td>
-                <td class="w-3">
-                  <a href=""><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>Tuấn</td>
-                <td>10</td>
-                <td>330.000đ</td>
-                <td class="w-3">
-                  <a href=""><i class="fa-solid fa-eye"></i></a>
-                </td>
-                <td class="w-3">
-                  <a href=""><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>Tuấn</td>
-                <td>10</td>
-                <td>330.000đ</td>
-                <td class="w-3">
-                  <a href=""><i class="fa-solid fa-eye"></i></a>
-                </td>
-                <td class="w-3">
-                  <a href=""><i class="fa-solid fa-trash"></i></a>
-                </td>
-              </tr>
+              <% }); %>
             </tbody>
           </table>
         </div>

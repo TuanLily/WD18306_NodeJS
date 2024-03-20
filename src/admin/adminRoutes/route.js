@@ -72,6 +72,8 @@ router.post("/productEdit", upload.single("image"), adminController.updateProduc
 //* Bắt đầu phần điều hướng phần tài khoản
 router.get("/orderList", adminController.renderOrderListPage);
 router.get("/orderDetail", adminController.renderOrderDetailPage);
+
+
 router.get("/userList", adminController.renderUserListPage);
 //* Kết thúc phần điều hướng phần tài khoản
 

@@ -69,9 +69,8 @@
     'shop': %> <%- include("../helper/header/header.helper.ejs") %> <%-
     include("../helper/header/nav.helper.ejs") %> <%-
     include("../helper/component/modal-search.ejs") %> <%-
-    include("../helper/component/slider.ejs") %> <%-
-    include("pages/shop.ejs") %> <%-
-    include("../helper/component/insta-feed.ejs") %> <%-
+    include("../helper/component/slider.ejs") %> <%- include("pages/shop.ejs")
+    %> <%- include("../helper/component/insta-feed.ejs") %> <%-
     include("../helper/footer/footer.helper.ejs") %> <% break; %> <% case
     'shop-detail': %> <%- include("../helper/header/header.helper.ejs") %> <%-
     include("../helper/header/nav.helper.ejs") %> <%-
@@ -98,20 +97,26 @@
     include("pages/account.ejs") %> <%-
     include("../helper/component/insta-feed.ejs") %> <%-
     include("../helper/footer/footer.helper.ejs") %> <% break; %><% case
-    'login': %> <%- include("pages/authenticate/login.ejs") %> <%
-    break; %><% case 'register': %> <%-
-    include("pages/authenticate/register.ejs") %> <% break; %> <%
-    default: %> <%- include("../helper/header/header.helper.ejs") %> <%-
-    include("../helper/header/nav.helper.ejs") %> <%-
+    'login': %> <%- include("pages/authenticate/login.ejs") %> <% break; %><%
+    case 'register': %> <%- include("pages/authenticate/register.ejs") %> <%
+    break; %> <% default: %> <%- include("../helper/header/header.helper.ejs")
+    %> <%- include("../helper/header/nav.helper.ejs") %> <%-
     include("../helper/component/modal-search.ejs") %> <%-
-    include("../helper/component/slider.ejs") %> <%-
-    include("pages/home.ejs") %> <%-
-    include("../helper/component/insta-feed.ejs") %> <%-
+    include("../helper/component/slider.ejs") %> <%- include("pages/home.ejs")
+    %> <%- include("../helper/component/insta-feed.ejs") %> <%-
     include("../helper/footer/footer.helper.ejs") %> <% } %>
 
     <!-- *Main end -->
+    
 
     <!-- ALL JS FILES -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.10.6/sweetalert2.all.js"
+      integrity="sha512-s6cmjAyURwCTwLDdp0oIw8QcQ7zdYioOWOoYACB7+Xmzrnc9VH1A8aUei32LafOWRiPiYJKSWSNoNg2WG5SBRA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
     <script src="../public/js/jquery-3.2.1.min.js"></script>
     <script src="../public/js/popper.min.js"></script>
     <script src="../public/js/bootstrap.min.js"></script>
@@ -119,7 +124,7 @@
     <script src="../public/js/jquery.superslides.min.js"></script>
     <script src="../public/js/bootstrap-select.js"></script>
     <script src="../public/js/inewsticker.js"></script>
-    <script src="../public/js/bootsnav.js."></script>
+    <script src="../public/js/bootsnav.js"></script>
     <script src="../public/js/images-loded.min.js"></script>
     <script src="../public/js/isotope.min.js"></script>
     <script src="../public/js/owl.carousel.min.js"></script>
