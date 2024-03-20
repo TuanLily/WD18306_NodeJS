@@ -1,25 +1,149 @@
-<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="searchModalLabel">Tìm kiếm:</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="input-group">
-                    <input type="search" class="form-control" placeholder="Nhập từ khóa tìm kiếm"
-                        aria-describedby="search-icon-1" id="searchInput">
-                    <button id="searchButton" class="btn btn-outline-secondary mx-1">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </div>
-                <div id="sampleProducts" class="mt-3 row justify-content-center">
-                    <!-- Mẫu sản phẩm sẽ được thêm vào đây -->
-                </div>
-            </div>
+<div
+  class="modal fade"
+  id="searchModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="searchModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="searchModalLabel">Tìm kiếm: (Lọc theo từ khóa và giá tiền VND)</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group">
+          <input
+            type="search"
+            class="form-control"
+            placeholder="Bạn cần sản phẩm gì?"
+            aria-describedby="search-icon-1"
+            id="searchInput"
+          />
+          <button id="searchButton" class="btn btn-outline-secondary mx-1">
+            <i class="fa fa-search"></i>
+          </button>
         </div>
+        <span
+          id="searchResultCount"
+          class="text-center align-content-center"
+        ></span>
+
+        <div id="sampleProducts" class="mt-3 row justify-content-center">
+          <!-- Nơi xuất ra dữ liệu sản phẩm -->
+        </div>
+      </div>
     </div>
+  </div>
 </div>
+
+<script>
+  // Hàm thực hiện tìm kiếm
+  function performSearch() {
+    const keyword = document.getElementById("searchInput").value.trim();
+
+    // Gửi yêu cầu tìm kiếm sản phẩm đến backend
+    fetch(`/search?keyword=${keyword}`)
+      .then((response) => response.json())
+      .then((data) => {
+        // Hiển thị kết quả tìm kiếm trên giao diện
+        displaySearchResults(data.products);
+
+        // Hiển thị số lượng sản phẩm tìm được
+        const countSpan = document.getElementById("searchResultCount");
+        countSpan.innerHTML = `Tìm được <strong>${data.products.length}</strong> sản phẩm`;
+      })
+      .catch((error) => console.error("Error searching products:", error));
+  }
+
+  // Gắn kết sự kiện tìm kiếm
+  document
+    .getElementById("searchButton")
+    .addEventListener("click", performSearch);
+  document
+    .getElementById("searchInput")
+    .addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        performSearch();
+      }
+    });
+
+  // Hàm hiển thị kết quả tìm kiếm
+  function displaySearchResults(products) {
+    const container = document.getElementById("sampleProducts");
+    container.innerHTML = ""; // Xóa nội dung cũ
+
+    if (products && products.length > 0) {
+      products.forEach((product) => {
+        // Hàm định dạng giá
+        const formatPrice = (price) => {
+          return new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          }).format(price);
+        };
+        // Tạo phần tử HTML tương ứng cho mỗi sản phẩm và thêm vào container
+        const productElement = document.createElement("div");
+        productElement.innerHTML = `
+        <div class="list-view-box">
+            <div class="row mt-3">
+              <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                <div class="products-single fix">
+                  <div class="box-img-hover">
+                    <img
+                      src="../uploads/${product.image}"
+                      class="img-fluid"
+                      alt="Image"
+                    />
+                    <div class="mask-icon">
+                      <ul>
+                        <li>
+                          <a
+                            href="shop-detail/${product.id}"
+                            data-toggle="tooltip"
+                            data-placement="right"
+                            title="Xem chi tiết"
+                            ><i class="fas fa-eye"></i
+                          ></a>
+                        </li>
+                        <li>
+                          <a
+                            href="#"
+                            data-toggle="tooltip"
+                            data-placement="right"
+                            title="Thêm vào mục yêu thích"
+                            ><i class="far fa-heart"></i
+                          ></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
+                <div class="why-text full-width">
+                  <h4>${product.name}</h4>
+                  <h6><del>${formatPrice(product.price)}</del></h6>
+                  <h5>${formatPrice(product.sale_price)}</h5>
+                  <a class="btn hvr-hover" href="#">Add to Cart</a>
+                </div>
+              </div>
+            </div>
+          </div>
+            `;
+        container.appendChild(productElement);
+      });
+    } else {
+      // Hiển thị thông báo nếu không có kết quả tìm kiếm
+      container.innerHTML = "<p>Không tìm thấy sản phẩm</p>";
+    }
+  }
+</script>

@@ -48,5 +48,8 @@ router.get("/register", (req, res) => {
 
 router.get("/shop", controller.renderShopPage);
 
+router.get("/search", controller.searchProducts);
+
+
 
 module.exports = router;

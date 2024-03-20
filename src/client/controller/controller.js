@@ -134,6 +134,21 @@ const renderRegisterPage = (req, res) => {
     res.render("index", { page: "register" }); // Render trang "contect"
 };
 
+const searchProducts = (req, res) => {
+    // Lấy từ khóa tìm kiếm từ request body hoặc query parameters
+    const keyword = req.body.keyword || req.query.keyword;
+    // Gọi hàm từ model để tìm kiếm sản phẩm dựa trên từ khóa
+    productModel.getProductsByKeyWord(keyword, (err, products) => {
+        if (err) {
+            // Xử lý lỗi nếu có
+            return res.status(500).json({ success: false, message: "Internal Server Error" });
+        }
+
+        // Trả về kết quả tìm kiếm cho client
+        res.status(200).json({ success: true, products: products });
+    });
+};
+
 module.exports = {
     renderHomePage,
     renderAboutPage,
@@ -145,5 +160,7 @@ module.exports = {
     renderContactPage,
     renderAccountPage,
     renderLoginPage,
-    renderRegisterPage
+    renderRegisterPage,
+
+    searchProducts
 };

@@ -34,8 +34,23 @@ const getRandomProducts = (callback) => {
     });
 };
 
+const getProductsByKeyWord = (keyword, callback) => {
+    // Thực hiện truy vấn CSDL để lấy danh sách sản phẩm có tên hoặc mô tả chứa từ khóa
+    const query = "SELECT * FROM products WHERE name LIKE ? OR price LIKE ? OR sale_price LIKE ?";
+    const searchKeyword = "%" + keyword + "%";
+    connection.query(query, [searchKeyword, searchKeyword, searchKeyword], (error, results) => {
+        if (error) {
+            callback(error, null);
+        } else {
+            callback(null, results);
+        }
+    });
+};
+
+
 module.exports = {
     getAllProducts,
     getProductById,
-    getRandomProducts
+    getRandomProducts,
+    getProductsByKeyWord
 };
