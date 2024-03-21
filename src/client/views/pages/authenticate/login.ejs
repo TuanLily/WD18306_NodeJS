@@ -65,15 +65,20 @@
                     Đăng nhập tài khoản
                   </h5>
 
+                  <% if (typeof errorMessage !== 'undefined' && errorMessage){%>
+                  <div class="alert alert-danger errMsg" role="alert">
+                    <%= errorMessage %>
+                  </div>
+                  <% } %>
+
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="emailInput"
-                      >Email address</label
-                    >
+                    <label class="form-label" for="emailInput">Email</label>
                     <input
                       type="email"
                       id="emailInput"
                       name="email"
                       class="form-control form-control-lg"
+                      placeholder="example@gmail.com"
                     />
                     <div class="emailError"></div>
                   </div>
@@ -87,6 +92,7 @@
                       id="passwordInput"
                       name="password"
                       class="form-control form-control-lg"
+                      placeholder="123456abc"
                     />
                     <div class="passwordError"></div>
                   </div>
@@ -97,7 +103,7 @@
                       id="loginButton"
                       type="submit"
                     >
-                      Login
+                      Đăng nhập
                     </button>
                   </div>
 
@@ -117,18 +123,19 @@
   </div>
 </section>
 
+<script>
+  let submitted = false;
 
-<!-- <script>
   document
     .getElementById("loginForm")
     .addEventListener("submit", function (event) {
       event.preventDefault(); // Ngăn chặn hành động mặc định của form
-
       const email = document.getElementById("emailInput").value.trim();
       const password = document.getElementById("passwordInput").value.trim();
 
       const emailError = document.querySelector(".emailError");
       const passwordError = document.querySelector(".passwordError");
+      const errMsg = document.querySelector(".errMsg");
 
       function validateEmail(email) {
         const re = /\S+@\S+\.\S+/;
@@ -151,54 +158,12 @@
       // Kiểm tra password không được trống
       if (!password) {
         passwordError.innerHTML = `<span class="text-danger">Mật khẩu không được để trống</span>`;
+        hasError = true;
       } else {
         passwordError.innerHTML = "";
       }
-
       if (!hasError) {
-        // Gửi dữ liệu đăng nhập lên máy chủ (sử dụng fetch hoặc AJAX)
-        fetch("/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: email,
-            password: password,
-          }),
-        })
-          .then((response) => {
-            if (!response.ok) {
-              Swal.fire({
-                icon: "error",
-                title: "Đăng nhập không thành công",
-                text: "Tài khoản hoặc mật khẩu không đúng.",
-              });
-              return; // Kết thúc xử lý ở đây nếu response không thành công
-            }
-            return response.json(); // Chuyển sang phần xử lý thành công nếu response thành công
-          })
-          .then((data) => {
-            if (!data) return; // Kết thúc xử lý ở đây nếu không có dữ liệu trả về
-            Swal.fire({
-              icon: "success",
-              title: "Đăng nhập thành công",
-              text: "Bạn sẽ được chuyển hướng trong giây lát.",
-              showConfirmButton: false,
-              timer: 1500, // Thời gian hiển thị thông báo
-            }).then(() => {
-              // Kiểm tra phản hồi từ máy chủ và chuyển hướng đến trang chính nếu đăng nhập thành công
-              if (data.redirectUrl) {
-                window.location.href = data.redirectUrl;
-              }
-            });
-          })
-          .catch((error) => {
-            console.error(
-              "There was a problem with your fetch operation:",
-              error
-            );
-          });
+        this.submit();
       }
     });
-</script> -->
+</script>

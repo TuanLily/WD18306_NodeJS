@@ -46,10 +46,6 @@ router.get("/account", (req, res) => {
 });
 
 
-router.get("/register", (req, res) => {
-    controller.renderRegisterPage(req, res, "register");
-});
-
 router.get("/shop", controller.renderShopPage);
 
 router.get("/search", controller.searchProducts);
@@ -73,5 +69,14 @@ router.post("/logout", (req, res) => {
         res.redirect("/");
     });
 });
+
+
+router.get("/register", (req, res) => {
+    controller.renderRegisterPage(req, res, "register");
+});
+
+router.post("/api/register", controller.addNewUser);
+
+
 
 module.exports = router;
