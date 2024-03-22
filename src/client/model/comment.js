@@ -28,7 +28,6 @@ const getAllCommentsByProductId = (productId, callback) => {
                 callback(err, null);
                 return;
             }
-            console.log("Comments retrieved successfully");
             callback(null, results);
         }
     );

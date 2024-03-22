@@ -26,6 +26,9 @@ clientApp.set("views", path.join(__dirname, "src", "client", "views"));
 clientApp.set("view engine", "ejs");
 clientApp.use(express.static(path.join(__dirname, "src", "client")));
 clientApp.use("/", require("./src/client/routes/route.js"));
+clientApp.use("/", require("./src/client/routes/loginRoute.js"));
+clientApp.use("/", require("./src/client/routes/registerRoute.js"));
+clientApp.use("/", require("./src/client/routes/commentRoute.js"));
 
 // Đặt cấu hình cho trang admin
 const adminApp = express();

@@ -2,9 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../controller/controller");
-// const { LocalStorage } = require("node-localstorage");
 
-// const localStorage = new LocalStorage("./scratch");
 
 // Route cho trang chính
 router.get("/", (req, res) => {
@@ -27,9 +25,6 @@ router.get("/cart", (req, res) => {
     controller.renderCartPage(req, res, "cart");
 });
 
-// router.get("/shop", (req, res) => {
-//     controller.renderShopPage(req, res, "shop");
-// });
 router.get("/checkout", (req, res) => {
     controller.renderCheckoutPage(req, res, "checkout");
 });
@@ -49,38 +44,6 @@ router.get("/account", (req, res) => {
 router.get("/shop", controller.renderShopPage);
 
 router.get("/search", controller.searchProducts);
-
-
-router.get("/login", (req, res) => {
-    controller.renderLoginPage(req, res, "login");
-});
-
-router.post("/login", controller.postLogin);
-
-router.post("/logout", (req, res) => {
-    // Xóa thông tin người dùng khỏi session hoặc cookie (nếu có)
-    req.session.destroy((err) => {
-        if (err) {
-            console.error("Error logging out:", err);
-            res.status(500).send("Internal Server Error");
-            return;
-        }
-        // Chuyển hướng người dùng đến trang chính hoặc trang đăng nhập sau khi đăng xuất thành công
-        res.redirect("/");
-    });
-});
-
-
-router.get("/register", (req, res) => {
-    controller.renderRegisterPage(req, res, "register");
-});
-
-router.post("/api/register", controller.addNewUser);
-
-router.post("/addComment", controller.addComment);
-
-
-
 
 
 
