@@ -2,6 +2,7 @@
 const productModel = require("../model/product");
 const cateModel = require("../model/category");
 const userModel = require("../model/user");
+const commentModel = require("../model/comment");
 
 
 const bcrypt = require("bcrypt");
@@ -77,6 +78,17 @@ const renderShopPage = (req, res) => {
 const renderCheckoutPage = (req, res) => {
     res.render("index", { page: "checkout", user: req.session.user }); // Render trang "Checkout"
 };
+
+
+const getCommentsForProduct = (productId, callback) => {
+    commentModel.getAllCommentsByProductId(productId, (err, comments) => {
+        if (err) {
+            callback(err, null);
+        } else {
+            callback(null, comments);
+        }
+    });
+};
 const renderShopDetailPage = (req, res) => {
     const productId = req.params.id; // Lấy productId từ URL
 
@@ -87,6 +99,15 @@ const renderShopDetailPage = (req, res) => {
             currency: "VND",
         }).format(price);
     };
+
+    function formatDate(dateTimeString) {
+        const date = new Date(dateTimeString);
+        const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`; // Ví dụ: 21/3/2024
+        const hours = date.getHours().toString().padStart(2, "0");
+        const minutes = date.getMinutes().toString().padStart(2, "0");
+        return `${formattedDate} ${hours}:${minutes}`;
+    }
+    
 
     // Hàm lấy thông tin sản phẩm và sản phẩm ngẫu nhiên
     const getProductInfo = new Promise((resolve, reject) => {
@@ -109,18 +130,30 @@ const renderShopDetailPage = (req, res) => {
         });
     });
 
-    // Chờ cả hai hàm lấy dữ liệu hoàn thành trước khi render trang
-    Promise.all([getProductInfo, getRandomProductInfo])
-        .then(([product, randomProduct]) => {
+    const getCommentsForProduct = new Promise((resolve, reject) => {
+        commentModel.getAllCommentsByProductId(productId, (err, comments) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(comments);
+        });
+    });
+
+    // Chờ cả ba hàm lấy dữ liệu hoàn thành trước khi render trang
+    Promise.all([getProductInfo, getRandomProductInfo, getCommentsForProduct])
+        .then(([product, randomProduct, comments]) => {
             if (!product) {
                 res.status(404).send("Product not found");
                 return;
             }
             res.render("index", {
-                page: "shop-detail", user: req.session.user,
+                page: "shop-detail",
+                user: req.session.user,
                 product: product,
                 randomProduct: randomProduct,
-                formatPrice: formatPrice,
+                comments: comments, // Thêm danh sách comments vào đây
+                formatPrice: formatPrice, formatDate: formatDate
             });
         })
         .catch((err) => {
@@ -210,6 +243,19 @@ const addNewUser = (req, res) => {
 
 
 
+const addComment = (req, res) => {
+    const { user_id, product_id, content } = req.body;
+
+    commentModel.addComment(user_id, product_id, content, (err, commentId) => {
+        if (err) {
+            return res.status(500).json({ success: false, error: err.message });
+        }
+        res.status(201).json({ success: true, commentId });
+    });
+};
+
+
+
 
 
 
@@ -239,6 +285,8 @@ module.exports = {
     renderContactPage,
     renderAccountPage,
 
+    addComment,
+    getCommentsForProduct,
 
     searchProducts,
 

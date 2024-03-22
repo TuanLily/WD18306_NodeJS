@@ -77,6 +77,11 @@ router.get("/register", (req, res) => {
 
 router.post("/api/register", controller.addNewUser);
 
+router.post("/addComment", controller.addComment);
+
+
+
+
 
 
 module.exports = router;

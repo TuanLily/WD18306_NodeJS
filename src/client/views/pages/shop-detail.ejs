@@ -154,33 +154,71 @@
         </div>
       </div>
     </div>
-
     <div class="row my-5">
-      <div class="card card-outline-secondary my-4">
-        <div class="card-header">
-          <h2>Reviews sản phẩm</h2>
-        </div>
-        <div class="card-body">
-          <div class="media mb-3">
-            <div class="mr-2">
-              <img
-                class="rounded-circle border p-1"
-                src="../public/images/man.png"
-                width="80"
-                alt="Generic placeholder image"
-              />
-            </div>
-            <div class="media-body">
-              <p>
-                Trái cây không chỉ là một phần của chế độ ăn lành mạnh mà còn
-                mang lại nhiều lợi ích sức khỏe đặc biệt.
-              </p>
-              <small class="text-muted">Posted by Anonymous on 3/1/18</small>
-            </div>
+      <div class="col-md-8">
+        <div class="card card-outline-secondary my-4">
+          <div class="card-header">
+            <h2>Reviews sản phẩm</h2>
           </div>
-          <hr />
+          <div class="card-body">
+            <!-- Nội dung của card -->
+            <% if (comments && comments.length > 0) { %> <%
+            comments.forEach(function(comment) { %>
+            <div class="media mb-3">
+              <div class="mr-2">
+                <img
+                  class="rounded-circle border p-1"
+                  src="../public/images/man.png"
+                  width="80"
+                  alt="Generic placeholder image"
+                />
+              </div>
+              <div class="media-body">
+                <small class="text-muted">
+                  Người đánh giá <strong><%= comment.fullname %> </strong>
+                </small>
+                <p style="font-size: 19px; font-weight: bold">
+                  <%= comment.content %>
+                </p>
+                <small class="text-muted">
+                  Thời gian: <%= formatDate(comment.created_at) %></small
+                >
+              </div>
+            </div>
+            <% }); %> <% } else { %>
+            <!-- Hiển thị thông báo khi không có comment -->
+            <p>Chưa có đánh giá nào, bạn muốn là người đầu tiên chứ?</p>
+            <% } %>
 
-          <a href="#" class="btn hvr-hover">Thêm comment</a>
+            <hr />
+
+            <!-- Form để thêm comment -->
+            <!-- Kiểm tra nếu người dùng chưa đăng nhập -->
+            <% if (!user) { %>
+            <div class="alert alert-warning errMsg" role="alert">
+              <p>Bạn cần đăng nhập trước khi đánh giá.</p>
+            </div>
+            <% } else { %>
+            <form id="commentForm">
+              <!-- Các trường ẩn để chứa user_id và product_id -->
+              <input type="hidden" id="user_id" value="<%= user.id %>" />
+              <input type="hidden" id="product_id" value="<%= product.id %>" />
+
+              <div class="form-group">
+                <label for="comment">Nhận xét của bạn:</label>
+                <textarea
+                  class="form-control"
+                  id="comment"
+                  rows="3"
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="btn hvr-hover" style="color: #fff">
+                Gửi nhận xét
+              </button>
+            </form>
+            <% } %>
+          </div>
         </div>
       </div>
     </div>
@@ -241,4 +279,58 @@
 </div>
 <!-- End Cart -->
 
-\
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("commentForm");
+    const user_id = document.getElementById("user_id").value;
+    console.log(user_id);
+    const product_id = document.getElementById("product_id").value;
+    console.log(product_id);
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const commentContent = document.getElementById("comment").value;
+
+      fetch("/addComment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: user_id,
+          product_id: product_id,
+          content: commentContent,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Kiểm tra xem thêm nhận xét có thành công không
+          if (data.success) {
+            // Thêm nhận xét thành công, hiển thị thông báo SweetAlert2
+            Swal.fire({
+              icon: "success",
+              title: "Thành công!",
+              text: "Thêm nhận xét thành công!",
+              timer: 1500, // Thời gian hiển thị là 1500ms
+              showConfirmButton: false, // Ẩn nút button
+              timerProgressBar: true, // Hiển thị thanh tiến trình thời gian
+              didClose: () => {
+                location.reload(); // Reload lại trang sau khi đóng SweetAlert2
+              },
+            });
+          } else {
+            // Thêm nhận xét không thành công, hiển thị thông báo SweetAlert2
+            Swal.fire({
+              icon: "error",
+              title: "Lỗi!",
+              text: "Có lỗi xảy ra khi thêm nhận xét!",
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+  });
+</script>
