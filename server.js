@@ -33,6 +33,9 @@ adminApp.set("views", path.join(__dirname, "src", "admin", "adminViews"));
 adminApp.set("view engine", "ejs");
 adminApp.use(express.static(path.join(__dirname, "src", "admin")));
 adminApp.use("/admin", require("./src/admin/adminRoutes/route.js"));
+adminApp.use("/admin", require("./src/admin/adminRoutes/cateRoute.js"));
+adminApp.use("/admin", require("./src/admin/adminRoutes/productRoute.js"));
+adminApp.use("/admin", require("./src/admin/adminRoutes/userRoute.js"));
 
 // Sử dụng các ứng dụng con trong ứng dụng chính
 app.use(clientApp);
