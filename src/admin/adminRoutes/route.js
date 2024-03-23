@@ -40,9 +40,7 @@ router.get("/form", (req, res) => {
 router.get("/404", (req, res) => {
     adminController.renderAdmin404Page(req, res, "404");
 });
-router.get("/commentList", (req, res) => {
-    adminController.renderAdminCommentPage(req, res, "commentList");
-});
+
 
 
 router.get("/orderList", adminController.renderOrderListPage);

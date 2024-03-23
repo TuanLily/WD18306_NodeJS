@@ -51,9 +51,6 @@ const renderOrderDetailPage = (req, res) => {
 
 
 
-const renderAdminCommentPage = (req, res) => {
-    res.render("index", { page: "commentList" }); // Render trang "element" của admin
-};
 
 
 module.exports = {
@@ -66,8 +63,6 @@ module.exports = {
     renderAdminTypographyPage,
     renderAdminElementPage,
     renderAdminFormPage,
-
-    renderAdminCommentPage,
 
 
     renderOrderListPage,

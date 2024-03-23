@@ -39,6 +39,7 @@ adminApp.use("/admin", require("./src/admin/adminRoutes/route.js"));
 adminApp.use("/admin", require("./src/admin/adminRoutes/cateRoute.js"));
 adminApp.use("/admin", require("./src/admin/adminRoutes/productRoute.js"));
 adminApp.use("/admin", require("./src/admin/adminRoutes/userRoute.js"));
+adminApp.use("/admin", require("./src/admin/adminRoutes/commentRoute.js"));
 
 // Sử dụng các ứng dụng con trong ứng dụng chính
 app.use(clientApp);
