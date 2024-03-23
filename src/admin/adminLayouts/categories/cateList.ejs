@@ -18,7 +18,9 @@
               </tr>
             </thead>
             <tbody id="categoriesTableBody">
-              <% categories.forEach(category=> { %>
+              <% 
+                categories.sort((a, b) => b.id - a.id);
+                categories.forEach(category=> { %>
               <tr data-id="<%= category.id %>">
                 <th scope="row"><%= category.id %></th>
                 <td><%= category.name %></td>

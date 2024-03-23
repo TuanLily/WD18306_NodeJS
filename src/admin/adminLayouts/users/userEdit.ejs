@@ -1,0 +1,92 @@
+<!-- Form Start -->
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+    <div class="col-sm-12 col-xl-12">
+      <div class="bg-light rounded h-100 p-4">
+        <h6 class="mb-4">Sửa thông tin tài khoản khách hàng</h6>
+        <form class="formEdit-User" action="/admin/userEdit?id=<%= user.id %>" method="POST">
+          <div class="mb-3">
+            <label for="inputFullName" class="form-label">Họ và tên</label>
+            <input
+              type="text"
+              class="form-control"
+              id="inputFullName"
+              name="fullname"
+              value="<%= user.fullname %>"
+              aria-describedby="fullName"
+            />
+            <div class="fullNameError my-2"></div>
+          </div>
+          <div class="mb-3 row">
+            <div class="col-md-6">
+              <label for="inputEmail" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="inputEmail"
+                name="email"
+                value="<%= user.email %>"
+                aria-describedby="email"
+              />
+              <div class="emailError my-2"></div>
+            </div>
+            <div class="col-md-6">
+              <label for="inputPhoneNumber" class="form-label"
+                >Số điện thoại</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="inputPhoneNumber"
+                name="tel"
+                value="<%= user.tel %>"
+                aria-describedby="phoneNumber"
+              />
+              <div class="phoneNumberError my-2"></div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="inputAddress" class="form-label">Địa chỉ</label>
+            <input
+              type="text"
+              class="form-control"
+              id="inputAddress"
+              name="address"
+              value="<%= user.address %>"
+              aria-describedby="address"
+            />
+            <div class="addressError my-2"></div>
+          </div>
+          <div class="mb-3 row">
+            <div class="col-md-6">
+              <label for="inputPassword" class="form-label">Mật khẩu</label>
+              <input
+                type="password"
+                class="form-control"
+                id="inputPassword"
+                name="password"
+                value=""
+                aria-describedby="password"
+              />
+              <div class="passwordError my-2"></div>
+            </div>
+            <div class="col-md-6">
+              <label for="selectRole" class="form-label">Chọn quyền hạn</label>
+              <select class="form-select" id="selectRole" name="role">
+                <option value="1">Khách hàng</option>
+                <option value="2">Quản trị viên</option>
+              </select>
+              <div class="roleError my-2"></div>
+            </div>
+          </div>
+
+          <button type="submit" id="myBtn" class="btn btn-primary m-2">
+            Lưu thay đổi
+          </button>
+          <input type="reset" class="btn btn-warning m-2" value="Nhập lại" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Form End -->

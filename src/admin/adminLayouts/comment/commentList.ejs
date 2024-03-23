@@ -16,9 +16,11 @@
               </tr>
             </thead>
             <tbody id="commentsTableBody">
-              <% comments.forEach(function(comment, index) { %>
+              <% 
+                comments.sort((a, b) => b.id - a.id);
+                comments.forEach(function(comment, index) { %>
               <tr data-id="<%= comment.id %>">
-                <th scope="row"><%= index + 1 %></th>
+                <th scope="row"><%= comment.id %></th>
                 <td>
                   <strong>Mã: </strong><%= comment.product_id %><br />
                   <strong>Tên: </strong><%= comment.product_name %>
@@ -36,8 +38,7 @@
                     class="btn-del"
                     data-id="<%= comment.id %>"
                     data-title="<%= comment.content %>"
-                    onclick="return confirm('Bạn có chắc chắn muốn xóa bình luận <%= comment.content %> không?')"
-                  >
+                    onclick="return confirm('Bạn có chắc chắn muốn xóa bình luận <%= comment.content %> không?')">
                     <i class="fa-solid fa-trash"></i>
                   </a>
                 </td>

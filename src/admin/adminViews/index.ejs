@@ -97,12 +97,14 @@
         'productList' : %> <%-
         include("../adminLayouts/products/productList.ejs") %> <% break; case
         'userList' : %> <%- include("../adminLayouts/users/userList.ejs") %> <%
-        break;case 'commentList' : %> <%-
-        include("../adminLayouts/comment/commentList.ejs") %> <% break; case 'table'
-        : %> <%- include("pages/table.ejs") %> <% break; case 'typography' : %>
-        <%- include("pages/typography.ejs") %> <% break; case 'widget' : %> <%-
-        include("pages/widget.ejs") %> <% break; default: %> <%-
-        include("pages/home.ejs") %> <% } %>
+        break;case 'userEdit' : %> <%-
+        include("../adminLayouts/users/userEdit.ejs") %> <% break;case
+        'commentList' : %> <%-
+        include("../adminLayouts/comment/commentList.ejs") %> <% break; case
+        'table' : %> <%- include("pages/table.ejs") %> <% break; case
+        'typography' : %> <%- include("pages/typography.ejs") %> <% break; case
+        'widget' : %> <%- include("pages/widget.ejs") %> <% break; default: %>
+        <%- include("pages/home.ejs") %> <% } %>
 
         <!-- * Main End -->
 
