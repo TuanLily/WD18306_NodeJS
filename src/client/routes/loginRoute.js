@@ -3,7 +3,13 @@ const router = express.Router();
 const loginController = require("../controller/login.controller");
 
 router.get("/login", (req, res) => {
-    loginController.renderLoginPage(req, res, "login");
+    // Kiểm tra nếu có query parameter 'error', hiển thị thông báo lỗi
+    const error = req.query.error;
+    if (error === "admin_access_denied") {
+        loginController.renderLoginPage(req, res, "Bạn không có quyền truy cập trang Admin.");
+    } else {
+        loginController.renderLoginPage(req, res);
+    }
 });
 
 router.post("/login", loginController.postLogin);

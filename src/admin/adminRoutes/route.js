@@ -6,9 +6,10 @@ const adminController = require("../adminController/controller");
 
 
 // Route cho trang chính của admin
-router.get("/", (req, res) => {
-    adminController.renderAdminHomePage(req, res, "home");
-});
+router.get("/",
+    adminController.checkUserRole,
+    adminController.renderAdminHomePage
+);
 
 router.get("/button", (req, res) => {
     adminController.renderAdminButtonPage(req, res, "button");

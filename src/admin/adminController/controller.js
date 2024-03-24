@@ -50,7 +50,17 @@ const renderOrderDetailPage = (req, res) => {
 };
 
 
-
+const checkUserRole = (req, res, next) => {
+    // res.send(req.session.user);
+    // // Kiểm tra xem người dùng đã đăng nhập và có quyền là 2 (admin) hay không
+    if (req.session.user && req.session.user.role === 2) {
+        // Nếu có, cho phép tiếp tục
+        next();
+    } else {
+        // Nếu không, chuyển hướng người dùng về trang đăng nhập
+        res.redirect("/login?error=admin_access_denied");
+    }
+};
 
 
 module.exports = {
@@ -68,6 +78,6 @@ module.exports = {
     renderOrderListPage,
     renderOrderDetailPage,
 
-
+    checkUserRole
 
 };

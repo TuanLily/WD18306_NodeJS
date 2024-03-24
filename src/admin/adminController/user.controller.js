@@ -93,9 +93,9 @@ const updateUser = (req, res) => {
 };
 
 
-
 module.exports = {
     renderUserListPage,
     renderUserEditPage,
-    updateUser
+    updateUser,
+    
 };

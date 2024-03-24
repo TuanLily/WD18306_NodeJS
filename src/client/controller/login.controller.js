@@ -2,8 +2,8 @@ const userModel = require("../model/user");
 
 
 
-const renderLoginPage = (req, res) => {
-    res.render("index", { page: "login" }); // Render trang "contect"
+const renderLoginPage = (req, res, errorMessage) => {
+    res.render("index", { page: "login", errorMessage }); // Render trang "contect"
 };
 
 const postLogin = (req, res) => {
