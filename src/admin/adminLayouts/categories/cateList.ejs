@@ -17,38 +17,73 @@
                 <th scope="col" colspan="2">Hành động</th>
               </tr>
             </thead>
+            <!-- <tbody id="categoriesTableBody"></tbody> -->
+
             <tbody id="categoriesTableBody">
-              <% 
-                categories.sort((a, b) => b.id - a.id);
-                categories.forEach(category=> { %>
-              <tr data-id="<%= category.id %>">
-                <th scope="row"><%= category.id %></th>
-                <td><%= category.name %></td>
-                <td class="w-3">
-                  <a
-                    href="/admin/cateEdit?id=<%= category.id %>"
-                    class="btn-edit mx-1"
-                    data-id="<%= category.id %>"
-                  >
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </a>
-                  <a
-                    href="/admin/cateDelete/<%= category.id %>"
-                    class="btn-del"
-                    data-id="<%= category.id %>"
-                    data-title="<%= category.title %>"
-                    onclick="return confirm(`Bạn có chắc chắn muốn xóa danh mục '<%= category.name %>' không?`)"
-                  >
-                    <i class="fa-solid fa-trash"></i>
-                  </a>
-                </td>
-              </tr>
-              <% }); %>
+              <% categories.sort((a, b) => b.id - a.id);
+              categories.forEach(category=> { %> <% }); %>
             </tbody>
           </table>
+          <div
+            id="pagination-container"
+            class="pagination justify-content-center"
+          ></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 <!-- Table End -->
+<script>
+  const categoriesData = <%- JSON.stringify(categories) %>;
+</script>
+
+<script>
+  $(document).ready(function () {
+    const itemsPerPage = 5; // Số lượng mục trên mỗi trang
+    const categories = categoriesData; // Sử dụng dữ liệu từ biến JavaScript
+
+    // Hàm để tạo nội dung của mỗi trang
+    const createPageContent = (data) => {
+      let html = "";
+      data.forEach((category) => {
+        categories.sort((a, b) => b.id - a.id);
+        html += `<tr data-id="${category.id}">
+          <th scope="row">${category.id}</th>
+          <td>${category.name}</td>
+          <td class="w-3">
+            <a href="/admin/cateEdit?id=${category.id}" class="btn-edit mx-1" data-id="${category.id}">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </a>
+            <a href="/admin/cateDelete/${category.id}" class="btn-del" data-id="${category.id}" data-title="${category.title}" onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục ${category.name} không?')">
+              <i class="fa-solid fa-trash"></i>
+            </a>
+          </td>
+        </tr>`;
+      });
+      return html;
+    };
+
+    // Hàm để hiển thị dữ liệu trên trang cụ thể
+    const displayPage = (currentPage) => {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const pageData = categories.slice(startIndex, endIndex);
+      const html = createPageContent(pageData);
+      $("#categoriesTableBody").html(html);
+    };
+    // Khởi tạo pagination
+    $("#pagination-container").pagination({
+      dataSource: categories,
+      pageSize: itemsPerPage,
+      callback: function (data, pagination) {
+        displayPage(pagination.pageNumber);
+        $("#pagination-container ul").addClass("pagination");
+        $("#pagination-container li").addClass("page-item");
+        $("#pagination-container a").addClass("page-link");
+
+        history.pushState({}, "", "?page=" + pagination.pageNumber);
+      },
+    });
+  });
+</script>

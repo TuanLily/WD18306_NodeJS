@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 18, 2024 at 09:33 AM
+-- Generation Time: Mar 24, 2024 at 04:28 PM
 -- Server version: 8.0.31
 -- PHP Version: 7.4.33
 
@@ -83,7 +83,32 @@ INSERT INTO `categories` (`id`, `name`, `status`) VALUES
 (7, 'Trái cây nhập khẩu', 1),
 (8, 'Rau củ hữu cơ', 1),
 (9, 'Trái cây mùa hè', 1),
-(12, 'Rau củ bổ dưỡng', 1);
+(49, 'Trái cây nhiệt đới', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `id` int NOT NULL,
+  `product_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  `content` text COLLATE utf8mb4_general_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`id`, `product_id`, `user_id`, `content`, `created_at`) VALUES
+(16, 1, 67, 'good', '2024-03-22 02:50:08'),
+(19, 3, 67, 'Chuối này ngon nè', '2024-03-22 02:59:56'),
+(20, 2, 70, 'Xin chào', '2024-03-22 06:23:58'),
+(21, 2, 67, 'Good', '2024-03-22 15:44:01'),
+(22, 1, 67, 'Trái cây ngon, ngọt, hàng chất lượng tốt', '2024-03-23 04:47:25');
 
 -- --------------------------------------------------------
 
@@ -115,9 +140,10 @@ INSERT INTO `products` (`id`, `name`, `price`, `sale_price`, `image`, `descripti
 (6, 'Bắp cải xanh', 18000, 15000, 'pngegg (3).png', 'Cải bắp Trung Quốc xanh tươi, không bị đắng', 1, 2),
 (7, 'Xoài Cát Hòa Lộc', 35000, 30000, 'pngegg (1).png', 'Xoài Cát Hòa Lộc chín vàng, thơm ngọt', 1, 1),
 (9, 'Bưởi Diễn', 40000, 35000, 'pngegg (2).png', 'Bưởi Diễn từ vườn ruộng miền Nam', 1, 1),
-(10, 'Cà tím Ba Lan', 28000, 25000, 'dau.png', 'Cà tím Ba Lan đặc sản nước ngoài', 1, 2),
+(10, 'Dâu Tây Hàn Quốc', 28000, 25000, 'dau.png', 'Cà tím Ba Lan đặc sản nước ngoài', 1, 7),
 (12, 'Đào', 40000, 32000, 'dao.png', '<p>Đào ngon</p>', 1, 1),
-(13, 'Táo Đà Lạt', 40000, 30000, 'tao.png', '<p>Táo vàng</p>', 1, 7);
+(13, 'Táo Đà Lạt', 40000, 30000, 'tao.png', '<p>Táo vàng</p>', 1, 7),
+(19, 'Cà Tím Đà Lạt', 30000, 26000, '1710901174505_pngegg (4).png', '<p>Cà tím Đà Lạt ngon</p>', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -129,8 +155,8 @@ CREATE TABLE `users` (
   `id` int NOT NULL,
   `fullname` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `tel` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `address` text COLLATE utf8mb4_general_ci NOT NULL,
+  `tel` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `role` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1. Khách hàng\r\n2. Quản trị viên'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -140,16 +166,13 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `fullname`, `email`, `tel`, `address`, `password`, `role`) VALUES
-(1, 'Nguyễn Văn A', 'nguyenvana@example.com', '0123456789', 'Số 1 Đại Cồ Việt, Hai Bà Trưng, Hà Nội', '123456', 1),
-(2, 'Trần Thị B', 'tranthib@example.com', '0987654321', 'Số 2 Trần Hưng Đạo, Hoàn Kiếm, Hà Nội', 'abcdef', 1),
-(3, 'Lê Văn C', 'levanc@example.com', '0365478912', 'Số 3 Nguyễn Du, Hoàn Kiếm, Hà Nội', 'password', 1),
-(4, 'Phạm Thị D', 'phamthid@example.com', '0956847312', 'Số 4 Nguyễn Trãi, Thanh Xuân, Hà Nội', '123abc', 1),
-(5, 'Hoàng Văn E', 'hoangvane@example.com', '0369874123', 'Số 5 Lê Văn Hưu, Hai Bà Trưng, Hà Nội', 'password123', 1),
-(6, 'Vũ Thị F', 'vuthif@example.com', '0912345678', 'Số 6 Phạm Hùng, Cầu Giấy, Hà Nội', 'abc123', 1),
-(7, 'Đinh Văn G', 'dinhvang@example.com', '0987456321', 'Số 7 Trần Duy Hưng, Cầu Giấy, Hà Nội', 'password456', 1),
-(8, 'Ngô Thị H', 'ngothih@example.com', '0978563412', 'Số 8 Láng Hạ, Đống Đa, Hà Nội', '123456abc', 1),
-(9, 'Mai Văn I', 'maivani@example.com', '0356412379', 'Số 9 Nguyễn Chí Thanh, Đống Đa, Hà Nội', 'abc123456', 1),
-(10, 'Đặng Thị K', 'dangthik@example.com', '0946325871', 'Số 10 Hồ Tùng Mậu, Cầu Giấy, Hà Nội', '123abc456', 1);
+(66, 'Nguyễn Văn Chí Phèo', 'sutten2004@gmail.com', NULL, NULL, '$2b$10$7g5SehQovn9sWZAiNBbHieLuCoe.yOdyybWa3NoyAez5nsqk3lkqi', 1),
+(67, 'Nguyễn Văn Chí Phèo', 'te@gmail.com', NULL, NULL, '$2b$10$iBEhb9tqJ.ytynL634/yx.V21DRjaCG3BCGlnQZk.wWFu6cy9rL8u', 1),
+(68, '435345', 'st@gmail.com', NULL, NULL, '$2b$10$k40VXONNO3hLd1.DK6vEFu627wmAktjU9b9mByJR.dSaq94eeDzE.', 1),
+(69, 'Long Ka', 'sutten2005@gmail.com', NULL, NULL, '$2b$10$36MBc5aCw/2Ow4dYfOb34OPOzzVKSUNYud1w8NodGBSjdT2H05o4m', 1),
+(70, 'Nguyễn Văn Chí ', 'test@gmail.com', NULL, NULL, '$2b$10$m94w9cnJ9N4Sf2nYTPqK3.xmiitczO9Ty6ND8gs3ErHrj2mvMj26a', 1),
+(71, 'rứdfdz', 'k55@gmail.com', '', '', '$2b$10$VLGiSflc1ID2JuOv3pkOG.nXOQ.e2UbhRMZlNxtXbueb/acJ/vb1e', 1),
+(72, 'Tuấn LiLy', 'admin@admin.com', NULL, NULL, '$2b$10$fDIk4lxf7M7.B9RQ1JdBG.Inds9w0hWQjcJBDDTmIUTuJRIR.NFcK', 2);
 
 --
 -- Indexes for dumped tables
@@ -176,6 +199,14 @@ ALTER TABLE `cart`
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `products`
@@ -210,19 +241,25 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- Constraints for dumped tables
@@ -241,6 +278,13 @@ ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`bill_id`) REFERENCES `bill` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `cart_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `Products` (`id`),
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`);
 
 --
 -- Constraints for table `products`
