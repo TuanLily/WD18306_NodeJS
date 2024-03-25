@@ -3,13 +3,6 @@
   <div class="row g-4">
     <div class="col-12">
       <div class="bg-light rounded h-100 p-4">
-        <!-- <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Category</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Product</li>
-          </ol>
-        </nav> -->
         <h6 class="mb-4">Quản lý tài khoản khách hàng</h6>
         <div class="table-responsive">
           <table class="table">
@@ -17,22 +10,49 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Tên khách hàng</th>
-                <th scope="col">Địa chỉ</th>
                 <th scope="col">Email</th>
                 <th scope="col">Số điện thoại</th>
+                <th scope="col">Địa chỉ</th>
                 <th scope="col" colspan="2">Hành động</th>
               </tr>
             </thead>
             <tbody id="userTableBody">
-              <% users.sort((a, b) => b.id - a.id); users.forEach(user=> { %>
-              <tr>
-                <th scope="row"><%= user.id %></th>
-                <td><%= user.fullname %></td>
-                <td><%= user.email %></td>
-                <td><%= user.tel %></td>
-                <td><%= user.address %></td>
+              <% users.sort((a, b) => b.id - a.id); users.forEach(user=> { %> <%
+              }); %>
+            </tbody>
+          </table>
+          <div
+            id="pagination-container"
+            class="pagination justify-content-center"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Table End -->
+
+<script>
+  const userData = <%- JSON.stringify(users) %>;
+</script>
+
+<script>
+  $(document).ready(function () {
+    const itemsPerPage = 5; // Số lượng mục trên mỗi trang
+    const users = userData; // Sử dụng dữ liệu từ biến JavaScript
+
+    // Hàm để tạo nội dung của mỗi trang
+    const createPageContent = (data) => {
+      let html = "";
+      data.forEach((user) => {
+        html += `              <tr>
+                <th scope="row">${user.id}</th>
+                <td>${user.fullname}</td>
+                <td>${user.email}</td>
+                <td>${user.tel ? user.tel : ' '}</td>
+                <td>${user.address ? user.address : ' '}</td>
                 <td class="w-3">
-                  <a href="/admin/userEdit?id=<%= user.id %>" class="btn-edit mx-2" data-id="">
+                  <a href="/admin/userEdit?id=${user.id}" class="btn-edit mx-2" data-id="">
                     <i class="fa-solid fa-pen-to-square"></i>
                   </a>
                   <a
@@ -40,18 +60,37 @@
                     class="btn-del"
                     data-id=""
                     data-title=""
-                    onclick="return confirm(`Bạn có chắc chắn muốn xóa danh mục '' không?`)"
+                    onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản ${user.fullname} không?')"
                   >
                     <i class="fa-solid fa-trash"></i>
                   </a>
                 </td>
-              </tr>
-              <% }); %>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Table End -->
+              </tr>`;
+      });
+      return html;
+    };
+
+    // Hàm để hiển thị dữ liệu trên trang cụ thể
+    const displayPage = (currentPage) => {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const pageData = users.slice(startIndex, endIndex);
+      const html = createPageContent(pageData);
+      console.log(html);
+      $("#userTableBody").html(html);
+    };
+    // Khởi tạo pagination
+    $("#pagination-container").pagination({
+      dataSource: users,
+      pageSize: itemsPerPage,
+      callback: function (data, pagination) {
+        displayPage(pagination.pageNumber);
+        $("#pagination-container ul").addClass("pagination");
+        $("#pagination-container li").addClass("page-item");
+        $("#pagination-container a").addClass("page-link");
+
+        history.pushState({}, "", "?page=" + pagination.pageNumber);
+      },
+    });
+  });
+</script>

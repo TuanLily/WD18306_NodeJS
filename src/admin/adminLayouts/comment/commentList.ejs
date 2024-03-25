@@ -16,39 +16,84 @@
               </tr>
             </thead>
             <tbody id="commentsTableBody">
-              <% 
-                comments.sort((a, b) => b.id - a.id);
-                comments.forEach(function(comment, index) { %>
-              <tr data-id="<%= comment.id %>">
-                <th scope="row"><%= comment.id %></th>
-                <td>
-                  <strong>Mã: </strong><%= comment.product_id %><br />
-                  <strong>Tên: </strong><%= comment.product_name %>
-                </td>
-                <td>
-                  <strong>Mã: </strong><%= comment.user_id %><br />
-                  <strong>Tên: </strong><%= comment.user_fullname %>
-                </td>
-                <td colspan="2">
-                  <strong><%= comment.content %></strong>
-                </td>
-                <td class="w-3" colspan="2">
-                  <a
-                    href="/admin/commentDelete/<%= comment.id %>"
-                    class="btn-del"
-                    data-id="<%= comment.id %>"
-                    data-title="<%= comment.content %>"
-                    onclick="return confirm('Bạn có chắc chắn muốn xóa bình luận <%= comment.content %> không?')">
-                    <i class="fa-solid fa-trash"></i>
-                  </a>
-                </td>
-              </tr>
-              <% }); %>
+              <% comments.sort((a, b) => b.id - a.id);
+              comments.forEach(function(comment, index) { %> <% }); %>
             </tbody>
           </table>
+          <div
+            id="pagination-container"
+            class="pagination justify-content-center"
+          ></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 <!-- Table End -->
+
+<script>
+  const commentData = <%- JSON.stringify(comments) %>;
+</script>
+
+<script>
+  $(document).ready(function () {
+    const itemsPerPage = 5; // Số lượng mục trên mỗi trang
+    const comments = commentData; // Sử dụng dữ liệu từ biến JavaScript
+
+    // Hàm để tạo nội dung của mỗi trang
+    const createPageContent = (data) => {
+      let html = "";
+      data.forEach((comment) => {
+        html += `<tr data-id="${comment.id}">
+                <th scope="row">${comment.id}</th>
+                <td>
+                  <strong>Mã: </strong>${comment.product_id}<br />
+                  <strong>Tên: </strong>${comment.product_name}
+                </td>
+                <td>
+                  <strong>Mã: </strong>${comment.user_id}<br />
+                  <strong>Tên: </strong>${comment.user_fullname}
+                </td>
+                <td colspan="2">
+                  <strong>${comment.content}</strong>
+                </td>
+                <td class="w-3" colspan="2">
+                  <a
+                    href="/admin/commentDelete/${comment.id}"
+                    class="btn-del"
+                    data-id="${comment.id}"
+                    data-title="${comment.content}"
+                    onclick="return confirm('Bạn có chắc chắn muốn xóa bình luận ${comment.id} không?')"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </a>
+                </td>
+              </tr>`;
+      });
+      return html;
+    };
+
+    // Hàm để hiển thị dữ liệu trên trang cụ thể
+    const displayPage = (currentPage) => {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const pageData = comments.slice(startIndex, endIndex);
+      const html = createPageContent(pageData);
+      console.log(html);
+      $("#commentsTableBody").html(html);
+    };
+    // Khởi tạo pagination
+    $("#pagination-container").pagination({
+      dataSource: comments,
+      pageSize: itemsPerPage,
+      callback: function (data, pagination) {
+        displayPage(pagination.pageNumber);
+        $("#pagination-container ul").addClass("pagination");
+        $("#pagination-container li").addClass("page-item");
+        $("#pagination-container a").addClass("page-link");
+
+        history.pushState({}, "", "?page=" + pagination.pageNumber);
+      },
+    });
+  });
+</script>

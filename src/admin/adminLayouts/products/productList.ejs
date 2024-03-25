@@ -15,50 +15,104 @@
                 <th scope="col">Tên sản phẩm</th>
                 <th scope="col">Hình sản phẩm</th>
                 <th scope="col">Giá sản phẩm</th>
+                <th scope="col">Giá giảm</th>
                 <th scope="col" colspan="2">Hành động</th>
               </tr>
             </thead>
             <tbody id="productsTableBody">
               <% products.sort((a, b) => b.id - a.id);
-              products.forEach((product, index) => { %>
-              <tr>
-                <th scope="row"><%= product.id %></th>
-                <td><%= product.name %></td>
-                <td>
-                  <img
-                    src="../../uploads/<%= product.image %>"
-                    alt="IMG"
-                    width="80"
-                  />
-                </td>
-                <td><%= formatPrice(product.price) %></td>
-                <!-- Sử dụng hàm formatPrice để định dạng giá -->
-                <td><%= product.category %></td>
-                <td class="w-3">
-                  <a
-                    href="/admin/productEdit?id=<%= product.id %>"
-                    class="btn-edit mx-1"
-                    data-id="<%= product.id %>"
-                  >
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </a>
-                  <a
-                    href="/admin/productDelete/<%= product.id %>"
-                    class="btn-del"
-                    data-id="<%= product.id %>"
-                    data-title="<%= product.title %>"
-                    onclick="return confirm(`Bạn có chắc chắn muốn xóa danh mục '<%= product.name %>' không?`)"
-                  >
-                    <i class="fa-solid fa-trash"></i>
-                  </a>
-                </td>
-              </tr>
-              <% }); %>
+              products.forEach((product, index) => { %> <% }); %>
             </tbody>
           </table>
+          <div
+            id="pagination-container"
+            class="pagination justify-content-center"
+          ></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 <!-- Table End -->
+
+<script>
+  const productData = <%- JSON.stringify(products) %>;
+</script>
+
+<script>
+  $(document).ready(function () {
+    const itemsPerPage = 5; // Số lượng mục trên mỗi trang
+    const products = productData; // Sử dụng dữ liệu từ biến JavaScript
+
+    // Hàm để tạo nội dung của mỗi trang
+    const createPageContent = (data) => {
+      let html = "";
+      const formatPrice = (price) => {
+        return new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(price);
+      };
+      data.forEach((product) => {
+        html += `<tr>
+                <th scope="row">${product.id}</th>
+                <td>${product.name}</td>
+                <td>
+                  <img
+                    src="../../uploads/${product.image}"
+                    alt="IMG"
+                    width="80"
+                  />
+                </td>
+                <td>${formatPrice(product.price)}</td>
+                <!-- Sử dụng hàm formatPrice để định dạng giá -->
+                <td>${formatPrice(product.sale_price)}</td>
+                <td class="w-3">
+                  <a
+                    href="/admin/productEdit?id=${product.id}"
+                    class="btn-edit mx-1"
+                    data-id="${product.id}"
+                  >
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </a>
+                  <a
+                    href="/admin/productDelete/${product.id}"
+                    class="btn-del"
+                    data-id="${product.id}"
+                    data-title="${product.name}"
+                    onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục ${
+                      product.name
+                    } không?')"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </a>
+                </td>
+              </tr>`;
+      });
+      return html;
+    };
+
+    // Hàm để hiển thị dữ liệu trên trang cụ thể
+    const displayPage = (currentPage) => {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const pageData = products.slice(startIndex, endIndex);
+      const html = createPageContent(pageData);
+      console.log(html);
+      $("#productsTableBody").html(html);
+    };
+    // Khởi tạo pagination
+    $("#pagination-container").pagination({
+      dataSource: products,
+      pageSize: itemsPerPage,
+      callback: function (data, pagination) {
+        displayPage(pagination.pageNumber);
+        $("#pagination-container ul").addClass("pagination");
+        $("#pagination-container li").addClass("page-item");
+        $("#pagination-container a").addClass("page-link");
+
+        history.pushState({}, "", "?page=" + pagination.pageNumber);
+      },
+    });
+  });
+</script>

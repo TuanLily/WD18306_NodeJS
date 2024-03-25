@@ -12,7 +12,6 @@ const addComment = (userId, productId, content, callback) => {
                 callback(err, null);
                 return;
             }
-            console.log("Comment added successfully");
             callback(null, result.insertId);
         }
     );
