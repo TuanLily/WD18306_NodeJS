@@ -1,102 +1,137 @@
-const cateModel = require("../../models/admin/cateModel");
-
-
+// Hàm render trang danh sách danh mục
 const renderCategoryListPage = (req, res) => {
-    // Gọi hàm để lấy danh sách danh mục từ cơ sở dữ liệu
-    cateModel.getCategoryList((err, categories) => {
-        if (err) {
-            // Xử lý lỗi nếu có
-            console.error("Error fetching categories:", err);
+    const DB_HOST = process.env.DB_HOST || "localhost";
+    const PORT = process.env.PORT || "8888";
+
+    const apiUrl = `http://${DB_HOST}:${PORT}/admin/api/cateList/`;
+
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Fetch request failed");
+            }
+            return response.json();
+        })
+        .then(data => {
+            const categories = data.data;
+            res.render("index", { page: "cateList", categories });
+        })
+        .catch(err => {
+            console.error("Error", err);
             res.status(500).send("Internal Server Error");
-            return;
-        }
-        // Nếu không có lỗi, render trang và truyền danh sách danh mục vào template
-        res.render("index", { page: "cateList", categories });
-    });
+        });
 };
 
-
+// Hàm render trang thêm mới danh mục
 const renderCategoryCreatePage = (req, res) => {
     res.render("index", { page: "cateCreate" });
 };
 
+
+
+// Hàm thêm mới danh mục
 const addCategory = (req, res) => {
+    const DB_HOST = process.env.DB_HOST || "localhost";
+    const PORT = process.env.PORT || "8888";
     const { name } = req.body;
 
-    // Gọi hàm để thêm danh mục vào cơ sở dữ liệu
-    cateModel.addCategory(name, (err) => {
-        if (err) {
+    const apiUrl = `http://${DB_HOST}:${PORT}/admin/api/addCategory`;
+
+    fetch(apiUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name })
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Fetch request failed");
+            }
+            // Nếu request thành công, chuyển hướng người dùng đến trang danh sách danh mục
+            res.redirect("/admin/cateList");
+        })
+        .catch(err => {
             // Xử lý lỗi nếu có
             console.error("Error adding category:", err);
             res.status(500).send("Internal Server Error");
-            return;
-        }
-        // Nếu không có lỗi, chuyển hướng người dùng đến trang danh sách danh mục
-        res.redirect("/admin/cateList");
-    });
+        });
 };
 
 // Hàm xóa danh mục
 const deleteCategory = (req, res) => {
-    // Lấy categoryId từ tham số trong URL
-    const categoryId = req.params.id;
+    const DB_HOST = process.env.DB_HOST || "localhost";
+    const PORT = process.env.PORT || "8888";
+    const categoryId = req.params.id; // Lấy categoryId từ URL
 
-    // Gọi hàm để xóa danh mục từ cơ sở dữ liệu
-    cateModel.deleteCategory(categoryId, (err) => {
-        if (err) {
-            // Xử lý lỗi nếu có
+    const apiUrl = `http://${DB_HOST}:${PORT}/admin/api/deleteCategory/${categoryId}`;
+
+    fetch(apiUrl, {
+        method: "DELETE"
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Fetch request failed");
+            }
+            res.redirect("/admin/cateList");
+        })
+        .catch(err => {
             console.error("Error deleting category:", err);
             res.status(500).send("Internal Server Error");
-            return;
-        }
-        // Nếu không có lỗi, redirect lại trang danh sách danh mục
-        res.redirect("/admin/cateList");
-    });
+        });
 };
-
 // Hàm render trang sửa danh mục
 const renderCategoryEditPage = (req, res) => {
-    // Lấy categoryId từ query parameters
+    const DB_HOST = process.env.DB_HOST || "localhost";
+    const PORT = process.env.PORT || "8888";
     const categoryId = req.query.id;
 
-    if (categoryId) {
-        // Trang hiện tại đang ở đường dẫn /cateEdit?id=:id
-        // Gọi hàm để lấy thông tin danh mục từ cơ sở dữ liệu
-        cateModel.getCategoryById(categoryId, (err, category) => {
-            if (err) {
-                // Xử lý lỗi nếu có
-                console.error("Error fetching category:", err);
-                res.status(500).send("Internal Server Error");
-                return;
+    const apiUrl = `http://${DB_HOST}:${PORT}/admin/api/category/${categoryId}`;
+
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Fetch request failed");
             }
-            // Nếu không có lỗi, render trang và truyền thông tin danh mục vào template
-            res.render("index", { page: "cateEdit", category });
+            return response.json();
+        })
+        .then(data => {
+            res.render("index", { page: "cateEdit", category: data.data });
+        })
+        .catch(err => {
+            console.error("Error fetching category:", err);
+            res.status(500).send("Internal Server Error");
         });
-    } else {
-        // Trang hiện tại đang ở đường dẫn /cateEdit
-        // Thực hiện logic tương ứng
-        res.render("index", { page: "cateEdit" });
-    }
 };
 
 //  Hàm xử lý yêu cầu cập nhật danh mục
 const updateCategory = (req, res) => {
-    // Lấy thông tin từ body của request
+    const DB_HOST = process.env.DB_HOST || "localhost";
+    const PORT = process.env.PORT || "8888";
     const categoryId = req.query.id;
-    const newData = { name: req.body.name }; // Tạo object mới chứa dữ liệu cần cập nhật
+    const newData = { name: req.body.name };
+    // Xây dựng URL cho request API
+    const apiUrl = `http://${DB_HOST}:${PORT}/admin/api/updateCategory/${categoryId}`;
 
-    // Gọi hàm để cập nhật danh mục trong cơ sở dữ liệu
-    cateModel.updateCategory(categoryId, newData, (err) => {
-        if (err) {
-            // Xử lý lỗi nếu có
+    fetch(apiUrl, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newData)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Fetch request failed");
+            }
+            res.redirect("/admin/cateList");
+        })
+        .catch(err => {
             console.error("Error updating category:", err);
             res.status(500).send("Internal Server Error");
-            return;
-        }
-        // Nếu không có lỗi, redirect lại trang danh sách danh mục
-        res.redirect("/admin/cateList");
-    });
+        });
 };
+
 
 module.exports = {
     renderCategoryListPage,

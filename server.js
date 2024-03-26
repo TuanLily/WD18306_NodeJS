@@ -51,6 +51,10 @@ app.use("/", require("./src/routes/client/registerRoute.js"));
 app.use("/", require("./src/routes/client/commentRoute.js"));
 
 
+
+app.use("/admin/api", require("./src/routes/api/api.js"));
+
+
 // Đặt cấu hình cho trang client
 // const clientApp = express();
 // clientApp.set("views", path.join(__dirname, "src", "client", "views"));

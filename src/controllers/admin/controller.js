@@ -58,7 +58,7 @@ const checkUserRole = (req, res, next) => {
         next();
     } else {
         // Nếu không, chuyển hướng người dùng về trang đăng nhập
-        res.redirect("/login?error=admin_access_denied");
+        res.redirect("/login?error=loi_dang_nhap");
     }
 };
 

@@ -5,7 +5,7 @@ const loginController = require("../../controllers/client/login.controller");
 router.get("/login", (req, res) => {
     // Kiểm tra nếu có query parameter 'error', hiển thị thông báo lỗi
     const error = req.query.error;
-    if (error === "admin_access_denied") {
+    if (error === "loi_dang_nhap") {
         loginController.renderLoginPage(req, res, "Bạn không có quyền truy cập trang Admin.");
     } else {
         loginController.renderLoginPage(req, res);
