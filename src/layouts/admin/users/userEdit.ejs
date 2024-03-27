@@ -4,7 +4,11 @@
     <div class="col-sm-12 col-xl-12">
       <div class="bg-light rounded h-100 p-4">
         <h6 class="mb-4">Sửa thông tin tài khoản khách hàng</h6>
-        <form class="formEdit-User" action="/admin/userEdit?id=<%= user.id %>" method="POST">
+        <form
+          class="formEdit-User"
+          action="/admin/userEdit?id=<%= user.id %>"
+          method="POST"
+        >
           <div class="mb-3">
             <label for="inputFullName" class="form-label">Họ và tên</label>
             <input
@@ -73,6 +77,7 @@
             <div class="col-md-6">
               <label for="selectRole" class="form-label">Chọn quyền hạn</label>
               <select class="form-select" id="selectRole" name="role">
+                <option value="" selected>Vui lòng chọn phân quyền</option>
                 <option value="1">Khách hàng</option>
                 <option value="2">Quản trị viên</option>
               </select>
@@ -90,3 +95,106 @@
   </div>
 </div>
 <!-- Form End -->
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector(".formEdit-User");
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault(); // Ngăn chặn gửi yêu cầu mặc định
+
+      // Kiểm tra các trường dữ liệu và hiển thị lỗi nếu cần
+      const fullname = document.getElementById("inputFullName").value;
+      const email = document.getElementById("inputEmail").value;
+      const tel = document.getElementById("inputPhoneNumber").value;
+      const address = document.getElementById("inputAddress").value;
+      const password = document.getElementById("inputPassword").value;
+      const role = document.getElementById("selectRole").value;
+
+      function validatePassword(password) {
+        // Kiểm tra mật khẩu có ít nhất một số, một chữ cái viết hoa và một ký tự đặc biệt
+        const regex =
+          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+}{"':;?/>.<, ]).{6,}$/;
+        return regex.test(password);
+      }
+
+      function validateEmail(email) {
+        const re = /\S+@\S+\.\S+/;
+        return re.test(email);
+      }
+
+      let isValid = true; // Biến để kiểm tra xem form có hợp lệ không
+
+      // Kiểm tra họ và tên
+      const fullNameError = document.querySelector(".fullNameError");
+      if (!fullname.trim()) {
+        fullNameError.innerHTML = `<span class="text-danger">Họ và tên không được để trống</span>`;
+        isValid = false;
+      } else {
+        fullNameError.innerHTML = "";
+      }
+
+      // Kiểm tra email
+      const emailError = document.querySelector(".emailError");
+      if (!email.trim()) {
+        emailError.innerHTML = `<span class="text-danger">Email không được để trống</span>`;
+        isValid = false;
+      } else if (!validateEmail(email)) {
+        emailError.innerHTML = `<span class="text-danger">Email không đúng định dạng</span>`;
+        isValid = false;
+      } else {
+        emailError.innerHTML = "";
+      }
+
+      // Kiểm tra số điện thoại
+      const phoneNumberError = document.querySelector(".phoneNumberError");
+      if (tel.trim() && !/(84|0[3|5|7|8|9])+([0-9]{8})\b/.test(tel)) {
+        phoneNumberError.innerHTML = `<span class="text-danger">Số điện thoại không đúng định dạng</span>`;
+        isValid = false;
+      } else {
+        phoneNumberError.innerHTML = "";
+      }
+
+      // Kiểm tra địa chỉ
+      const addressError = document.querySelector(".addressError");
+      if (address.trim() && address.length < 2) {
+        addressError.innerHTML = `<span class="text-danger">Địa chỉ phái chứa ít nhất 2 ký tự</span>`;
+        isValid = false;
+      } else {
+        addressError.innerHTML = "";
+      }
+
+      // Kiểm tra mật khẩu
+      const passwordError = document.querySelector(".passwordError");
+      if (password.trim() && !validatePassword(password)) {
+        passwordError.innerHTML = `<span class="text-danger">Mật khẩu phải chứa ít nhất một số, một chữ cái viết hoa và một ký tự đặc biệt</span>`;
+        isValid = false;
+      } else {
+        passwordError.innerHTML = "";
+      }
+
+      // Kiểm tra quyền hạn
+      const roleError = document.querySelector(".roleError");
+      if (!role) {
+        roleError.innerHTML = `<span class="text-danger">Vui lòng chọn quyền hạn</span>`;
+        isValid = false;
+      } else {
+        roleError.innerHTML = "";
+      }
+
+      // Nếu form hợp lệ, gửi yêu cầu cập nhật tài khoản
+      if (isValid) {
+        Swal.fire({
+          icon: "success",
+          title: "Thành công!",
+          text: "Cập nhật thành công!",
+          showConfirmButton: false,
+          timer: 1500, // Tắt tự động sau 1.5 giây
+          didClose: () => {
+            this.submit();
+          },
+        });
+      }
+    });
+  });
+</script>

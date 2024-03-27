@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const cateAPIController = require("../../controllers/api/categories");
 const productsAPIController = require("../../controllers/api/products");
+const usersAPIController = require("../../controllers/api/users");
 const upload = require("../../config/multer.js");
 
 router.get("/cateList/", cateAPIController.getAllCategories);
@@ -30,6 +31,12 @@ router.patch("/updateProduct/:id", upload.single("image"), productsAPIController
 
 
 
+
+router.get("/userList/", usersAPIController.getAllUsers);
+
+router.get("/user/:id", usersAPIController.getUserById);
+
+router.patch("/updateUser/:id", upload.single("image"), usersAPIController.updateUser);
 
 
 
